@@ -1,0 +1,18 @@
+# 腾讯云密钥配置
+TencentCloud:
+  SecretId:
+  SecretKey:
+
+# EdgeOne站点配置
+EdgeOne:
+  - ZoneId: zone-example1
+    OriginGroupId: og-example1
+    Tag: tag-example1
+
+  - ZoneId: zone-example2
+    OriginGroupId: og-example2
+    Tag: tag-example2
+
+# 使用钉钉机器人通知结果
+DingTalk:
+  webhook: https://oapi.dingtalk.com/robot/send?access_token=example
