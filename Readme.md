@@ -4,6 +4,8 @@ EdgeOne 是腾讯云的边缘安全加速平台。该脚本为其提供动态更
 此功能特别适用于那些 IP 地址可能会变化的源站，比如仅有动态 IPV6 地址的服务器，
 确保 CDN 始终能够正确地获取最新的内容。
 
+注意，若要使用该脚本，在 EdgeOne 中的加速域名必须使用源站组配置源站。
+
 ### 使用方法
 
 1. 必要依赖：
@@ -11,7 +13,7 @@ EdgeOne 是腾讯云的边缘安全加速平台。该脚本为其提供动态更
     python -m pip install --upgrade pip
     pip install requests pyyaml
     ```
-2. 重命名 `config.example.yaml` 为 `config.yaml` ，并编辑配置项。
+2. 重命名 `config.example.yaml` 为 `config.yaml` ，并编辑配置项，具体配置项请参考 `config.example.yaml` 中的注释。
 3. 对于 windows，可以通过 **任务计划程序** 将脚本配置为定期执行；对于 linux，可以使用 **cron** 将脚本配置为定期执行
 
 #### Windows 任务计划程序配置示例
