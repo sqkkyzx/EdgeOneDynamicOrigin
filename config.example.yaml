@@ -1,9 +1,12 @@
-# 腾讯云密钥配置
+# 腾讯云密钥配置，可以在 https://console.cloud.tencent.com/cam/capi 创建API密钥
 TencentCloud:
   SecretId:
   SecretKey:
 
 # EdgeOne站点配置
+# ZoneID 在站点列表 https://console.cloud.tencent.com/edgeone/zones 查询
+# OriginGroupId 是源站组ID，在源站组列表 https://console.cloud.tencent.com/edgeone/zones/detail/zone-2ukf1ega8dw2/origin/groups 查询
+# Tag 是标签，可以随意设置，仅用于日志和通知中进行识别。
 EdgeOne:
   - ZoneId: zone-example1
     OriginGroupId: og-example1
@@ -14,6 +17,8 @@ EdgeOne:
     Tag: tag-example2
 
 # 使用钉钉机器人通知结果
+# webhook中填写机器人的 webhook 地址
+# title 为通知标题，暂不支持模板变量
 DingTalk:
   webhook: https://oapi.dingtalk.com/robot/send?access_token=example
   title: EdgeOne源站组变更
