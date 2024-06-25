@@ -16,3 +16,4 @@ EdgeOne:
 # 使用钉钉机器人通知结果
 DingTalk:
   webhook: https://oapi.dingtalk.com/robot/send?access_token=example
+  title: EdgeOne源站组变更

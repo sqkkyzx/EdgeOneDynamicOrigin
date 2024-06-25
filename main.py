@@ -1,12 +1,41 @@
 import hashlib
 import hmac
+import json
 import logging
 import time
 from datetime import datetime, timezone
 from logging.handlers import RotatingFileHandler
-import json
+
 import requests
 import yaml
+
+
+def setup_logging():
+    """
+    设置日志记录。
+    """
+    _logger = logging.getLogger()
+    _logger.setLevel(logging.INFO)
+
+    # 创建文件处理器并设置级别
+    file_handler = RotatingFileHandler("eodo.log", maxBytes=200 * 1024, backupCount=1)
+    file_handler.setLevel(logging.INFO)
+
+    # 创建控制台处理器并设置级别
+    console_handler = logging.StreamHandler()
+    console_handler.setLevel(logging.INFO)
+
+    # 创建格式化器并将其添加到处理器
+    formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+    file_handler.setFormatter(formatter)
+    console_handler.setFormatter(formatter)
+
+    # 将处理器添加到记录器
+    _logger.addHandler(file_handler)
+    _logger.addHandler(console_handler)
+
+    return _logger
+
 
 # 腾讯云请求信息
 service: str = 'teo'
@@ -19,20 +48,6 @@ http_request_method: str = 'POST'
 canonical_uri: str = '/'
 canonical_query_string: str = ''
 signed_headers: str = 'content-type;host;x-tc-action'
-
-
-def setup_logging():
-    """
-    设置日志记录。
-    """
-    logger = logging.getLogger()
-    logger.setLevel(logging.INFO)
-    handler = RotatingFileHandler("eodo.log", maxBytes=200 * 1024, backupCount=1)
-    formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-    handler.setFormatter(formatter)
-    logger.addHandler(handler)
-    return logger
-
 
 logger = setup_logging()
 
@@ -140,11 +155,9 @@ def main():
     ipv6_list = get_ipv6_addresses()
 
     for item in groups:
-        print(item)
         zone, og, tag = item.get('ZoneId'), item.get('OriginGroupId'), item.get('Tag')
 
         if ipv6_list == describe_origin_group(zone, og):
-            print(f"IP address unchanged, OriginGroup {tag} no update needed.")
             logger.info(f"IP address unchanged, OriginGroup {tag} no update needed.")
             continue
 
@@ -161,7 +174,7 @@ def main():
             webhook_url = dingtalk.get("webhook")
             requests.post(webhook_url, json={
                 "markdown": {
-                    "title": "EdgeOne",
+                    "title": dingtalk.get('title'),
                     "text": f"### EdgeOne源站更新\n\n"
                             f"> 标签：{tag}\n\n"
                             f"> 站点：{zone}\n\n"
@@ -169,7 +182,6 @@ def main():
                             f"> IPV6：{ipv6_list}\n\n"
                             f"> 信息：{msg}"
                 }, "msgtype": "markdown"})
-
     return
 
 
