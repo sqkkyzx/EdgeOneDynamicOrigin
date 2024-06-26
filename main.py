@@ -2,6 +2,7 @@ import hashlib
 import hmac
 import json
 import logging
+import socket
 import time
 from datetime import datetime, timezone
 from logging.handlers import RotatingFileHandler
@@ -61,9 +62,18 @@ def get_ipv6_addresses():
     """
     从指定网络接口获取首选IPv6地址列表。
     """
-    ipv6 = requests.get('https://6.ipw.cn').text
-    ipv6_list = ipv6.split('\n')
-    logger.info(f"IPv6: {ipv6_list}")
+    try:
+        ipv6 = requests.get('https://6.ipw.cn').text
+        ipv6_list = ipv6.split('\n')
+        logger.info(f"IPv6: {ipv6_list}")
+    except Exception as e:
+        logger.info(f"Cannot get IPv6 address from https://6.ipw.cn")
+        logger.info(f"Try to get IPv6 address from socket")
+        addrinfos = socket.getaddrinfo(socket.gethostname(), None)
+        ipv6_list = [addrinfo[4][0] for addrinfo in addrinfos if addrinfo[0] == socket.AF_INET6 and addrinfo[4][3] == 0]
+        if len(ipv6_list) > 0:
+            ipv6_list = [ipv6_list[0]]
+            logger.info(f"IPv6: {ipv6_list}")
     return ipv6_list
 
 
@@ -156,7 +166,8 @@ def main():
         if ipv6_list == describe_origin_group(zone, og):
             logger.info(f"IP address unchanged, OriginGroup {tag} no update needed.")
             continue
-
+        else:
+            logger.info(f"IP address changed, New IP <{ipv6_list}>")
         res = modify_origin_group(zone, og, ipv6_list)
         error = res.get("Response", {}).get("Error", {})
         msg, error_code = error.get("Message", ""), error.get("Code", "")
