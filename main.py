@@ -58,12 +58,26 @@ def read_config(node):
     return config.get(node, {})
 
 
+def v6ping_test(ipv6):
+    headers = {
+        'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 '
+                      '(KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36 Edg/127.0.0.0',
+        'referer': 'https://ipw.cn/ipv6ping/'
+    }
+    res = requests.get(F'https://ipw.cn/api/ping/ipv6/{ipv6}/4/all', headers=headers)
+    if 'PingFailed' in res.text:
+        logger.info(f"Address [{ipv6}] Ping Failed...")
+        return False
+    logger.info(f"Address [{ipv6}] Ping Success...")
+    return True
+
+
 def get_ipv6_addresses():
     """
     从指定网络接口获取首选IPv6地址列表。
     """
     try:
-        ipv6 = requests.get('https://6.ipw.cn').text
+        ipv6 = requests.get('https://6.ipw.cn', timeout=1).text
         ipv6_list = ipv6.split('\n')
         logger.info(f"IPv6: {ipv6_list}")
     except Exception as e:
@@ -71,9 +85,13 @@ def get_ipv6_addresses():
         logger.info(f"Try to get IPv6 address from socket")
         addrinfos = socket.getaddrinfo(socket.gethostname(), None)
         ipv6_list = [addrinfo[4][0] for addrinfo in addrinfos if addrinfo[0] == socket.AF_INET6 and addrinfo[4][3] == 0]
-        if len(ipv6_list) > 0:
-            ipv6_list = [ipv6_list[0]]
+        count = len(ipv6_list)
+        if count > 0:
+            logger.info(f"There are {len(ipv6_list)} IPv6 addresses, waitting for Ping Test...")
+            ipv6_list = [v6 for v6 in ipv6_list if v6ping_test(v6)]
             logger.info(f"IPv6: {ipv6_list}")
+        else:
+            logger.info(f"No IPv6 addresses.")
     return ipv6_list
 
 
