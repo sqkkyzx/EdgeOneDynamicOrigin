@@ -76,22 +76,15 @@ def get_ipv6_addresses():
     """
     从指定网络接口获取首选IPv6地址列表。
     """
-    try:
-        ipv6 = requests.get('https://6.ipw.cn', timeout=1).text
-        ipv6_list = ipv6.split('\n')
+    addr_infos = socket.getaddrinfo(socket.gethostname(), None)
+    ipv6_list = [addr_info[4][0] for addr_info in addr_infos if addr_info[0] == socket.AF_INET6 and addr_info[4][3] == 0]
+    count = len(ipv6_list)
+    if count > 0:
+        logger.info(f"There are {len(ipv6_list)} IPv6 addresses, waiting for Ping Test...")
+        ipv6_list = [v6 for v6 in ipv6_list if v6ping_test(v6)]
         logger.info(f"IPv6: {ipv6_list}")
-    except Exception as e:
-        logger.info(f"Cannot get IPv6 address from https://6.ipw.cn")
-        logger.info(f"Try to get IPv6 address from socket")
-        addrinfos = socket.getaddrinfo(socket.gethostname(), None)
-        ipv6_list = [addrinfo[4][0] for addrinfo in addrinfos if addrinfo[0] == socket.AF_INET6 and addrinfo[4][3] == 0]
-        count = len(ipv6_list)
-        if count > 0:
-            logger.info(f"There are {len(ipv6_list)} IPv6 addresses, waitting for Ping Test...")
-            ipv6_list = [v6 for v6 in ipv6_list if v6ping_test(v6)]
-            logger.info(f"IPv6: {ipv6_list}")
-        else:
-            logger.info(f"No IPv6 addresses.")
+    else:
+        logger.info(f"No IPv6 addresses.")
     return ipv6_list
 
 
@@ -177,6 +170,19 @@ def main():
     groups = read_config("EdgeOne")
     dingtalk = read_config("DingTalk")
     ipv6_list = get_ipv6_addresses()
+    ipv4_list = get_ipv4_addresses()
+
+    if not ipv6_list:
+        logger.info(f"Cannot Get IPv6 address, Skip update all OriginGroup.")
+        if dingtalk:
+            webhook_url = dingtalk.get("webhook")
+            requests.post(webhook_url, json={
+                "markdown": {
+                    "title": dingtalk.get('title'),
+                    "text": f"### EdgeOne源站更新\n\n"
+                            f"> 信息：无法获取公网IPv6，跳过此次更新。"
+                }, "msgtype": "markdown"})
+
 
     for item in groups:
         zone, og, tag = item.get('ZoneId'), item.get('OriginGroupId'), item.get('Tag')
@@ -205,6 +211,7 @@ def main():
                             f"> 站点：{zone}\n\n"
                             f"> 源站组：{og}\n\n"
                             f"> IPV6：{ipv6_list}\n\n"
+                            f"> IPV4：{ipv4_list}\n\n"
                             f"> 信息：{msg}"
                 }, "msgtype": "markdown"})
     return

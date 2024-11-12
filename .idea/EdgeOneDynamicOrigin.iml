@@ -5,10 +5,10 @@
       <sourceFolder url="file://$MODULE_DIR$/docker" isTestSource="false" />
       <excludeFolder url="file://$MODULE_DIR$/.venv" />
     </content>
-    <orderEntry type="inheritedJdk" />
+    <orderEntry type="jdk" jdkName="Python 3.12" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
   <component name="PackageRequirementsSettings">
-    <option name="versionSpecifier" value="不指定版本" />
+    <option name="versionSpecifier" />
   </component>
 </module>
