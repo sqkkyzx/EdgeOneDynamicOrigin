@@ -182,6 +182,7 @@ def main():
                     "text": f"### EdgeOne源站更新\n\n"
                             f"> 信息：无法获取公网IPv6，跳过此次更新。"
                 }, "msgtype": "markdown"})
+
         return
 
     for item in groups:
