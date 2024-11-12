@@ -85,7 +85,7 @@ def get_ipv6_addresses():
         logger.info(f"IPv6: {ipv6_list}")
     else:
         logger.info(f"No IPv6 addresses.")
-    return ipv6_list
+    return set(ipv6_list)
 
 
 def get_ipv4_addresses():
@@ -93,7 +93,7 @@ def get_ipv4_addresses():
     从指定网络接口获取首选IPv4地址列表。
     """
     ipv4 = requests.get('https://4.ipw.cn').text
-    return ipv4.split('\n')
+    return set(ipv4.split('\n'))
 
 
 def eo_api(action, body):
@@ -160,7 +160,7 @@ def describe_origin_group(zone_id, origin_group_id):
     if len(res) >= 1:
         origin_records = res[0].get('OriginRecords')
         iplist = [i.get('Record') for i in origin_records]
-        return iplist
+        return set(iplist)
     else:
         logger.error(f"OriginGroup does not exist. <{zone_id}:{origin_group_id}>")
         return None
@@ -169,10 +169,10 @@ def describe_origin_group(zone_id, origin_group_id):
 def main():
     groups = read_config("EdgeOne")
     dingtalk = read_config("DingTalk")
-    ipv6_list = get_ipv6_addresses()
-    ipv4_list = get_ipv4_addresses()
+    ipv6_set = get_ipv6_addresses()
+    ipv4_set = get_ipv4_addresses()
 
-    if not ipv6_list:
+    if not ipv6_set:
         logger.info(f"Cannot Get IPv6 address, Skip update all OriginGroup.")
         if dingtalk:
             webhook_url = dingtalk.get("webhook")
@@ -182,18 +182,18 @@ def main():
                     "text": f"### EdgeOne源站更新\n\n"
                             f"> 信息：无法获取公网IPv6，跳过此次更新。"
                 }, "msgtype": "markdown"})
-
         return
 
     for item in groups:
         zone, og, tag = item.get('ZoneId'), item.get('OriginGroupId'), item.get('Tag')
 
-        if ipv6_list == describe_origin_group(zone, og):
+        if ipv6_set == describe_origin_group(zone, og):
             logger.info(f"IP address unchanged, OriginGroup {tag} no update needed.")
             continue
         else:
-            logger.info(f"IP address changed, New IP <{ipv6_list}>")
-        res = modify_origin_group(zone, og, ipv6_list)
+            logger.info(f"IP address changed, New IP <{ipv6_set}>")
+
+        res = modify_origin_group(zone, og, ipv6_set)
         error = res.get("Response", {}).get("Error", {})
         msg, error_code = error.get("Message", ""), error.get("Code", "")
 
@@ -211,8 +211,8 @@ def main():
                             f"> 标签：{tag}\n\n"
                             f"> 站点：{zone}\n\n"
                             f"> 源站组：{og}\n\n"
-                            f"> IPV6：{ipv6_list}\n\n"
-                            f"> IPV4：{ipv4_list}\n\n"
+                            f"> IPV6：{",".join(ipv6_set)}\n\n"
+                            f"> IPV4：{",".join(ipv4_set)}\n\n"
                             f"> 信息：{msg}"
                 }, "msgtype": "markdown"})
     return
