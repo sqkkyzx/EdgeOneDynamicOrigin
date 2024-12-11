@@ -5,20 +5,13 @@ TencentCloud:
 
 # EdgeOne站点配置
 # ZoneID 在站点列表 https://console.cloud.tencent.com/edgeone/zones 查询
-# OriginGroupId 是源站组ID，在源站组列表 https://console.cloud.tencent.com/edgeone/zones/detail/zone-2ukf1ega8dw2/origin/groups 查询
-# Tag 是标签，可以随意设置，仅用于日志和通知中进行识别。
-EdgeOne:
-  - ZoneId: zone-example1
-    OriginGroupId: og-example1
-    Tag: tag-example1
+EdgeOneZoneId:
+  - zone-1*******
+  - zone-2*******
 
-  - ZoneId: zone-example2
-    OriginGroupId: og-example2
-    Tag: tag-example2
+DnsPodRecord:
+  - v6-app1.example.com
+  - v6-app2.example.com
 
 # 使用钉钉机器人通知结果
-# webhook中填写机器人的 webhook 地址
-# title 为通知标题，暂不支持模板变量
-DingTalk:
-  webhook: https://oapi.dingtalk.com/robot/send?access_token=example
-  title: EdgeOne源站组变更
+DingTalkWebhook:  https://oapi.dingtalk.com/robot/send?access_token=example

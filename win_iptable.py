@@ -33,7 +33,6 @@ def delete_firewall_rules(group="@用户定义_EdgeOne"):
 
 def add_firewall_rule(name, ips, protocol="TCP", direction="Inbound", action="ALLOW", group="@用户定义_EdgeOne"):
     ips_str = '","'.join(ips)
-    # cmd = f"netsh advfirewall firewall add rule name=\"{name}\" dir={direction} action={action} protocol={protocol} remoteip={ips_str}"
     cmd = f"PowerShell -Command \"New-NetFirewallRule -DisplayName '{name}' -Direction {direction} -Action {action.capitalize()} -Protocol {protocol} -RemoteAddress \"{ips_str}\" -Group '{group}'\""
     subprocess.run(cmd, shell=True)
 
