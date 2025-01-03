@@ -21,7 +21,7 @@ def _setup_logging():
     _logger = logging.getLogger()
     _logger.setLevel(logging.INFO)
 
-    file_handler = RotatingFileHandler("log", maxBytes=200 * 1024, backupCount=1, encoding="utf-8")
+    file_handler = RotatingFileHandler("log.txt", maxBytes=200 * 1024, backupCount=1, encoding="utf-8")
     file_handler.setLevel(logging.INFO)
 
     console_handler = logging.StreamHandler()
@@ -253,11 +253,14 @@ class IPv6Tool:
         if self.ipv6:
             public_ipv6_list = [ipv6 for ipv6 in self.ipv6 if self.ipv6_ping_test(ipv6)]
             logger.info(f"本机公网 IPV6 地址为: {public_ipv6_list}")
+        else:
+            logger.info(f"无法验证公网 IPV6 地址，将根据 ISP 前缀筛选。")
+            public_ipv6_list = [ipv6 for ipv6 in self.ipv6 if ipv6.startswith("240e") or ipv6.startswith("2408") or ipv6.startswith("2409")]
+
+        if public_ipv6_list:
             return set(public_ipv6_list)
         else:
-            logger.info(f"查询不到公网 IPV6 地址。")
             return None
-
 
 class Dingtalk:
     def __init__(self, webhook):
