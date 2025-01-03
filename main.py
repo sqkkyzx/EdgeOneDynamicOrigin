@@ -146,27 +146,12 @@ class QcloudClient:
         error = response.get("Response", {}).get("Error", {})
         return error.get("Message", ""), error.get("Code", "")
 
-
-    @staticmethod
-    def decode_full_domain(full_domain):
-        full_domain_list = full_domain.split('.')
-
-        if len(full_domain_list) == 2:
-            domain =  full_domain
-            subdomain = "@"
-        else:
-            domain =  '.'.join(full_domain_list[1:])
-            subdomain = full_domain_list[0]
-
-        return domain, subdomain
-
-    def modify_dns_record(self, full_domain, iplist, record_id):
-        domain, subdomain = self.decode_full_domain(full_domain)
+    def modify_dns_record(self, top_domain, sub_domain, record_type, iplist, record_id):
 
         body = {
-                "Domain": domain,
-                "SubDomain": subdomain,
-                "RecordType": "AAAA",
+                "Domain": top_domain,
+                "SubDomain": sub_domain,
+                "RecordType": record_type,
                 "RecordId": record_id,
                 "RecordLine": "默认",
                 "Value": list(iplist)[0],
@@ -178,15 +163,14 @@ class QcloudClient:
             json=body
         )
 
-    def create_dns_record(self, full_domain, iplist):
-        domain, subdomain = self.decode_full_domain(full_domain)
+    def create_dns_record(self, top_domain, sub_domain, record_type, iplist):
 
         body = {
-                "Domain": domain,
-                "RecordType": "AAAA",
+                "Domain": top_domain,
+                "RecordType": record_type,
                 "RecordLine": "默认",
                 "Value": list(iplist)[0],
-                "SubDomain": subdomain,
+                "SubDomain": sub_domain,
                 "TTL": 600
             }
         response = requests.post(
@@ -195,19 +179,17 @@ class QcloudClient:
         error = response.get("Response", {}).get("Error", {})
         return error.get("Message", ""), error.get("Code", "")
 
-    def delete_dns_record(self, full_domain, record_id):
-        domain, subdomain = self.decode_full_domain(full_domain)
+    def delete_dns_record(self, top_domain, record_id):
 
-        body = {"Domain": domain, "RecordId": record_id}
+        body = {"Domain": top_domain, "RecordId": record_id}
         requests.post(f'https://{self.host}', headers=self.signature("DeleteRecord", body), json=body)
 
-    def describe_dns_record(self, full_domain):
-        domain, subdomain = self.decode_full_domain(full_domain)
+    def describe_dns_record(self, top_domain, sub_domain, record_type):
 
         body = {
-                "Domain": domain,
-                "Subdomain": subdomain,
-                "RecordType": "AAAA",
+                "Domain": top_domain,
+                "Subdomain": sub_domain,
+                "RecordType": record_type,
             }
         responses = requests.post(
             f'https://{self.host}',
@@ -349,23 +331,25 @@ def main():
         dnspod = QcloudClient(secret=qcloud_secret, service='dnspod', version='2021-03-23')
 
         for domain in domains:
-            records = dnspod.describe_dns_record(domain)
+            sub_domain, record_type, top_domain = domain.split('|')
+            fqdn = '.'.join([sub_domain, top_domain])
+            records = dnspod.describe_dns_record(top_domain, sub_domain, record_type)
             record_counts = len(records)
 
             for record in records:
                 if record["Value"] not in list(iptool.public_ipv6):
-                    logger.info(f"解析记录 {domain} 存在已过期的值 {record['Value']} , 正在删除。")
-                    dnspod.delete_dns_record(record, record['RecordId'])
-                    record_counts = record_counts - 1
+                    logger.info(f"站点 {fqdn} 存在已过期的解析记录 {record['Value']} , 正在删除。")
+                    dnspod.delete_dns_record(top_domain, record['RecordId'])
+                    record_counts -= 1
 
             if record_counts >= 1:
-                logger.info(f"解析记录 {domain} 查询到至少存在一条有效值, 跳过解析更改。")
+                logger.info(f"站点 {fqdn} 查询到至少存在一条有效解析记录, 跳过解析更改。")
             else:
-                error_msg, error_code = dnspod.create_dns_record(domain, iptool.public_ipv6)
-                error_msg = f"成功更新解解析记录 {domain} " if not error_code and not error_msg else error_msg
+                logger.info(f"站点 {fqdn} 不存在可用的解析记录，正在新建解析。")
+                error_msg, error_code = dnspod.create_dns_record(top_domain, sub_domain, record_type, iptool.public_ipv6)
+                error_msg = f"成功更新解解析记录 {fqdn} " if not error_code and not error_msg else error_msg
                 logger.info(f"{error_msg} {error_code}")
-                dingtalk.notice_dns_result(domain, list(iptool.public_ipv6), error_msg)
-
+                dingtalk.notice_dns_result(fqdn, list(iptool.public_ipv6), error_msg)
 
 
 if __name__ == "__main__":

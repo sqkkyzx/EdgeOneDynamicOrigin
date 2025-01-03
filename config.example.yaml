@@ -10,8 +10,8 @@ EdgeOneZoneId:
   - zone-2*******
 
 DnsPodRecord:
-  - v6-app1.example.com
-  - v6-app2.example.com
+  - v6-app1|AAAA|example.com
+  - v6-app2|AAAA|example.com
 
 # 使用钉钉机器人通知结果
 DingTalkWebhook:  https://oapi.dingtalk.com/robot/send?access_token=example
