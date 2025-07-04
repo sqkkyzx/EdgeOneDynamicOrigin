@@ -8,7 +8,7 @@ import os
 from pathlib import Path
 from eodo import task
 
-v = "0.1.7"
+v = "0.1.8"
 home_dir = Path.home()
 temp_dir = tempfile.gettempdir()
 
@@ -94,7 +94,7 @@ def save_config(config):
 
 # 读取日志文件
 def read_logs():
-    log_file = F"{temp_dir}/eodo.log.txt"
+    log_file = F"{temp_dir}/eodo.task.log.txt"
     if os.path.exists(log_file):
         try:
             with open(log_file, 'r', encoding='utf-8') as f:

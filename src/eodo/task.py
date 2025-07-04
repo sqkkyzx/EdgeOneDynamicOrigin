@@ -36,7 +36,8 @@ def _setup_logging(file="task"):
     console_handler.setFormatter(formatter)
 
     _logger.addHandler(file_handler)
-    _logger.addHandler(console_handler)
+    if file == "task":
+        _logger.addHandler(console_handler)
 
     return _logger
 
