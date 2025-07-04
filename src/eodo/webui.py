@@ -8,7 +8,7 @@ import os
 from pathlib import Path
 from eodo import task
 
-v = "0.1.6"
+v = "0.1.7"
 home_dir = Path.home()
 temp_dir = tempfile.gettempdir()
 
@@ -65,9 +65,9 @@ def get_last_task_ipv6(task_id=""):
             m = re.match(rF".*\[{task_id}] 获取公网 IPV6 地址成功，地址为：(.*)" , line)
             if m:
                 return m.group(1)
-        return None
+        return "None"
     else:
-        return None
+        return "None"
 
 
 # 读取配置文件
@@ -125,7 +125,7 @@ def main_ui():
         st.write(f"上一次执行时间:")
         st.write(info.get("time", "无"))
         st.write(f"上一次获取地址: ")
-        last_task_ipv6 = get_last_task_ipv6(info.get("id", ""))
+        last_task_ipv6 = get_last_task_ipv6(info.get("id", "")) or "None"
         for ipv6 in last_task_ipv6.split(","):
             st.write(ipv6)
         st.write(f"当前定时间隔: {st.session_state.get('interval', '未知')} 分钟")
