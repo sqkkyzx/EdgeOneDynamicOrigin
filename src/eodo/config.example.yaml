@@ -1,0 +1,17 @@
+# 腾讯云密钥配置，可以在 https://console.cloud.tencent.com/cam/capi 创建API密钥
+TencentCloud:
+  SecretId:
+  SecretKey:
+
+# EdgeOne站点配置
+# ZoneID 在站点列表 https://console.cloud.tencent.com/edgeone/zones 查询
+EdgeOneZoneId:
+  - zone-1*******
+  - zone-2*******
+
+DnsPodRecord:
+  - v6-app1|AAAA|example.com
+  - v6-app2|AAAA|example.com
+
+# 使用钉钉机器人通知结果
+DingTalkWebhook:  https://oapi.dingtalk.com/robot/send?access_token=example

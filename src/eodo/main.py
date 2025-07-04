@@ -9,9 +9,14 @@ from datetime import datetime, timezone
 from logging.handlers import RotatingFileHandler
 from typing import List
 
+import tempfile
 import requests
 import yaml
 import sys
+from pathlib import Path
+
+home_dir = Path.home()
+temp_dir = tempfile.gettempdir()
 
 
 def _setup_logging():
@@ -21,7 +26,7 @@ def _setup_logging():
     _logger = logging.getLogger()
     _logger.setLevel(logging.INFO)
 
-    file_handler = RotatingFileHandler("../log/log.txt", maxBytes=200 * 1024, backupCount=1, encoding="utf-8")
+    file_handler = RotatingFileHandler(F"{temp_dir}/eodo.log.txt", maxBytes=200 * 1024, backupCount=1, encoding="utf-8")
     file_handler.setLevel(logging.INFO)
 
     console_handler = logging.StreamHandler()
@@ -38,7 +43,7 @@ def _setup_logging():
 
 def _read_config():
     if len(sys.argv) < 2:
-        config_file = "../config.yaml"
+        config_file = f"{str(home_dir)}/.eodo.config.yaml"
     else:
         config_file = sys.argv[1]
 

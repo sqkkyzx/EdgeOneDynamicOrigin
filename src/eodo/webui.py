@@ -1,11 +1,17 @@
+import tempfile
 import streamlit as st
 import yaml
 import os
+from pathlib import Path
+
+home_dir = Path.home()
+temp_dir = tempfile.gettempdir()
+
 
 # 读取配置文件
 def read_config():
-    if os.path.exists("../config.yaml"):
-        with open("../config.yaml", 'r', encoding='utf-8') as file:
+    if os.path.exists(f"{str(home_dir)}/.eodo.config.yaml"):
+        with open(f"{str(home_dir)}/.eodo.config.yaml", 'r', encoding='utf-8') as file:
             try:
                 config = yaml.safe_load(file)
             except yaml.YAMLError as exc:
@@ -17,7 +23,7 @@ def read_config():
 
 # 保存配置文件
 def save_config(config):
-    with open("../config.yaml", 'w', encoding='utf-8') as file:
+    with open(f"{str(home_dir)}/.eodo.config.yaml", 'w', encoding='utf-8') as file:
         try:
             yaml.dump(config, file, allow_unicode=True)
             st.success("配置文件保存成功！")
@@ -26,7 +32,7 @@ def save_config(config):
 
 # 读取日志文件
 def read_logs():
-    log_file = "../log/log.txt"
+    log_file = F"{temp_dir}/eodo.log.txt"
     if os.path.exists(log_file):
         try:
             with open(log_file, 'r', encoding='utf-8') as f:
