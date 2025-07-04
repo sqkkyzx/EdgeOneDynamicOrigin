@@ -10,12 +10,12 @@ def run_task():
     import uuid
     task_id = str(uuid.uuid4())
     try:
-        task.logger.info(f"[{task_id}] 启动")
+        task.cron_logger.info(f"[{task_id}] 启动")
         task.main(task_id=task_id)
-        task.logger.info(f"[{task_id}] 结束")
+        task.cron_logger.info(f"[{task_id}] 结束")
     except Exception as e:
         print(e)
-        task.logger.error(f"[{task_id}] 异常")
+        task.cron_logger.error(f"[{task_id}] 异常")
 
 def start_scheduler(interval_minutes):
     schedule.every(interval_minutes).minutes.do(run_task)

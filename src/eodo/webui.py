@@ -8,22 +8,23 @@ import os
 from pathlib import Path
 from eodo import task
 
+v = "0.1.6"
 home_dir = Path.home()
 temp_dir = tempfile.gettempdir()
 
 def run_task():
     task_id = str(uuid.uuid4())
     try:
-        task.logger.info(f"[{task_id}] 启动")
+        task.cron_logger.info(f"[{task_id}] 启动")
         task.main(task_id=task_id)
-        task.logger.info(f"[{task_id}] 结束")
+        task.cron_logger.info(f"[{task_id}] 结束")
     except Exception as e:
         print(e)
-        task.logger.error(f"[{task_id}] 异常")
+        task.cron_logger.error(f"[{task_id}] 异常")
 
 
 def get_last_task_info():
-    log_file = f"{temp_dir}/eodo.log.txt"
+    log_file = f"{temp_dir}/eodo.cron.log.txt"
     if os.path.exists(log_file):
         with open(log_file, 'r', encoding='utf-8') as f:
             lines = f.readlines()
@@ -55,7 +56,7 @@ def get_last_task_info():
         return {"id": "无", "result": "无", "time": "无"}
 
 def get_last_task_ipv6(task_id=""):
-    log_file = f"{temp_dir}/eodo.log.txt"
+    log_file = f"{temp_dir}/eodo.task.log.txt"
     if os.path.exists(log_file):
         with open(log_file, 'r', encoding='utf-8') as f:
             lines = f.readlines()
@@ -109,7 +110,7 @@ def read_logs():
 # Streamlit 主程序
 def main_ui():
 
-    st.title("EdgeOne 动态源站管理")
+    st.title(f"EdgeOne 动态源站管理 v{v}")
 
     # 创建选项卡
     tab0, tab1, tab2 = st.tabs(["状态", "配置", "日志"])

@@ -18,14 +18,14 @@ home_dir = Path.home()
 temp_dir = tempfile.gettempdir()
 
 
-def _setup_logging():
+def _setup_logging(file="task"):
     """
     设置日志记录。
     """
     _logger = logging.getLogger()
     _logger.setLevel(logging.INFO)
 
-    file_handler = RotatingFileHandler(F"{temp_dir}/eodo.log.txt", maxBytes=200 * 1024, backupCount=1, encoding="utf-8")
+    file_handler = RotatingFileHandler(F"{temp_dir}/eodo.{file}.log.txt", maxBytes=200 * 1024, backupCount=1, encoding="utf-8")
     file_handler.setLevel(logging.INFO)
 
     console_handler = logging.StreamHandler()
@@ -59,7 +59,7 @@ def _get_hostname():
 
 hostname = _get_hostname()
 logger = _setup_logging()
-
+cron_logger = _setup_logging("cron")
 
 class QcloudClient:
     def __init__(self, secret, service='teo', version='2022-09-01'):
