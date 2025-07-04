@@ -1,4 +1,6 @@
 /.venv/
-/.idea/!/config.yaml
+/.idea
 /config.yaml
 /eodo.log
+/uv.lock
+/log.*

@@ -34,12 +34,3 @@ EdgeOne 是腾讯云的边缘安全加速平台。该脚本为其提供动态更
     ```
     0 * * * * python /your_path/main.py
     ```
-   
-### 其他脚本
-
-`win_iptable.py` 用于为 EdgeOne 放通 windows 系统防火墙，以便于将服务器入站链接关闭，仅对 EdgeOne 放通 TCP 访问，增强安全性。
-该脚本会从 https://api.edgeone.ai/ips 查询EdgeOne的IP，然后创建4条入站链接：
-1. `@EdgeOne_v4_mainland-china`，放通来自EdgeOne中国大陆IPV4节点的TCP协议入站链接（所有端口）
-2. `@EdgeOne_v4_overseas`，放通来自EdgeOne海外IPV4节点的TCP协议入站链接（所有端口）
-3. `@EdgeOne_v6_mainland-china`，放通来自EdgeOne中国大陆IPV6节点的TCP协议入站链接（所有端口）
-4. `@EdgeOne_v6_overseas`，放通来自EdgeOne海外IPV6节点的TCP协议入站链接（所有端口）
