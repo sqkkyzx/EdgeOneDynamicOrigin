@@ -1,15 +1,22 @@
 [project]
-name = "EdgeOneDynamicOrigin"
-version = "0.1.0"
+name = "eodo"
+version = "0.1.3"
 description = "EdgeOneDynamicOrigin"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
     "requests",
     "PyYAML",
-    "streamlit"
+    "streamlit",
+    "schedule"
 ]
 
 [build-system]
-requires = ["setuptools>=42"]
-build-backend = "setuptools.build_meta"
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project.scripts]
+eodo = "eodo.app:main"
+
+[tool.hatch.build]
+sources = ["src"]

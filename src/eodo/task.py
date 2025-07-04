@@ -12,7 +12,6 @@ from typing import List
 import tempfile
 import requests
 import yaml
-import sys
 from pathlib import Path
 
 home_dir = Path.home()
@@ -42,16 +41,11 @@ def _setup_logging():
     return _logger
 
 def _read_config():
-    if len(sys.argv) < 2:
-        config_file = f"{str(home_dir)}/.eodo.config.yaml"
-    else:
-        config_file = sys.argv[1]
-
-    with open(config_file, 'r', encoding='utf-8') as file:
+    with open(f"{str(home_dir)}/.eodo.config.yaml", 'r', encoding='utf-8') as file:
         try:
             _config = yaml.safe_load(file)
         except yaml.YAMLError as exc:
-            logging.error(f"无法读取配置文件 {config_file} : {exc}")
+            logging.error(f"无法读取配置文件 {str(home_dir)}/.eodo.config.yaml : {exc}")
     return _config
 
 def _get_hostname():
@@ -63,7 +57,6 @@ def _get_hostname():
         return _hostname
 
 
-config = _read_config()
 hostname = _get_hostname()
 logger = _setup_logging()
 
@@ -210,23 +203,6 @@ class IPv6Tool:
         self.public_ipv6:set[str]|None = self.filter_public_ipv6()
 
     @staticmethod
-    def ipv6_ping_test(ipv6):
-        res = requests.get(
-            url=F'https://ipw.cn/api/ping/ipv6/{ipv6}/4/all',
-            headers={
-                'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 '
-                              '(KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36 Edg/127.0.0.0',
-                'referer': 'https://ipw.cn/ipv6ping/'
-            })
-
-        if 'PingFailed' in res.text:
-            logger.info(f"地址 <{ipv6}> Ping 测试失败。")
-            return False
-        else:
-            logger.info(f"地址 <{ipv6}> Ping 测试通过，是公网地址。")
-            return True
-
-    @staticmethod
     def get_ipv6_list():
         addr_infos = socket.getaddrinfo(socket.gethostname(), None)
         ipv6_list = [
@@ -239,14 +215,6 @@ class IPv6Tool:
 
     def filter_public_ipv6(self):
         if self.ipv6:
-            # public_ipv6_list = [ipv6 for ipv6 in self.ipv6 if self.ipv6_ping_test(ipv6)]
-            # logger.info(f"本机公网 IPV6 地址为: {public_ipv6_list}")
-            # if not public_ipv6_list:
-            #     logger.info(f"无法验证公网 IPV6 地址，将根据 ISP 前缀筛选。")
-            #     public_ipv6_list = [ipv6 for ipv6 in self.ipv6 if ipv6.startswith("240e") or ipv6.startswith("2408") or ipv6.startswith("2409")]
-            # if public_ipv6_list:
-            #     public_ipv6_list.sort()
-            #     return set(public_ipv6_list)
             public_ipv6_list = [ipv6 for ipv6 in self.ipv6 if ipv6.startswith("240e") or ipv6.startswith("2408") or ipv6.startswith("2409")]
             public_ipv6_list.sort()
             return set(public_ipv6_list)
@@ -299,7 +267,8 @@ class Dingtalk:
         )
 
 
-def main():
+def main(task_id=""):
+    config = _read_config()
     iptool = IPv6Tool()
     dingtalk = Dingtalk(config.get('DingTalkWebhook'))
     eo_zones = config.get("EdgeOneZoneId")
@@ -307,10 +276,11 @@ def main():
     qcloud_secret = config.get('TencentCloud')
 
     if not iptool.public_ipv6:
-        logger.info(f"无法获取 IPV6 地址，跳过后续所有步骤。")
+        logger.info(f"[{task_id}] 无法获取 IPV6 地址，跳过后续所有步骤。")
         dingtalk.notice_no_public_ipv6()
         return
-
+    else:
+        logger.info(f"[{task_id}] 获取公网 IPV6 地址成功，地址为：{",".join(iptool.public_ipv6)}")
 
     if eo_zones:
         eo_client = QcloudClient(secret=qcloud_secret, service='teo', version='2022-09-01')
@@ -324,18 +294,18 @@ def main():
                 records = set(old_list)
 
                 if iptool.public_ipv6 == records:
-                    logger.info(f"公网 IPV6 地址未发生变更，站点 {zone} 的源站组 {hostname} 无需更新。")
+                    logger.info(f"[{task_id}] 公网 IPV6 地址未发生变更，站点 {zone} 的源站组 {hostname} 无需更新。")
                 else:
-                    logger.info(f"公网 IPV6 地址发生变更，新的地址： {iptool.public_ipv6}")
+                    logger.info(f"[{task_id}] 公网 IPV6 地址发生变更，新的地址： {iptool.public_ipv6}")
                     error_msg, error_code = eo_client.modify_origin_group(zone, group_id, iptool.public_ipv6)
                     error_msg = F"成功更新站点 {zone} 的源站组 {hostname} 。" if not error_code and not error_msg else error_msg
-                    logger.info(f"{error_msg} {error_code}")
+                    logger.info(f"[{task_id}] {error_msg} {error_code}")
                     dingtalk.notice_eo_result(hostname, zone, list(iptool.public_ipv6), error_msg)
             else:
-                logger.info(f"站点 {zone} 的源站组 {hostname} 尚未未创建。")
+                logger.info(f"[{task_id}] 站点 {zone} 的源站组 {hostname} 尚未未创建。")
                 error_msg, error_code = eo_client.create_origin_group(zone, iptool.public_ipv6)
                 error_msg = F"成功创建站点 {zone} 的源站组 {hostname} 。" if not error_code and not error_msg else error_msg
-                logger.info(f"{error_msg} {error_code}")
+                logger.info(f"[{task_id}] {error_msg} {error_code}")
                 dingtalk.notice_eo_result(hostname, zone, list(iptool.public_ipv6), error_msg)
 
     if domains:
@@ -349,17 +319,17 @@ def main():
 
             for record in records:
                 if record["Value"] not in list(iptool.public_ipv6):
-                    logger.info(f"站点 {fqdn} 存在已过期的解析记录 {record['Value']} , 正在删除。")
+                    logger.info(f"[{task_id}] 站点 {fqdn} 存在已过期的解析记录 {record['Value']} , 正在删除。")
                     dnspod.delete_dns_record(top_domain, record['RecordId'])
                     record_counts -= 1
 
             if record_counts >= 1:
-                logger.info(f"站点 {fqdn} 查询到至少存在一条有效解析记录, 跳过解析更改。")
+                logger.info(f"[{task_id}] 站点 {fqdn} 查询到至少存在一条有效解析记录, 跳过解析更改。")
             else:
-                logger.info(f"站点 {fqdn} 不存在可用的解析记录，正在新建解析。")
+                logger.info(f"[{task_id}] 站点 {fqdn} 不存在可用的解析记录，正在新建解析。")
                 error_msg, error_code = dnspod.create_dns_record(top_domain, sub_domain, record_type, iptool.public_ipv6)
                 error_msg = f"成功更新解解析记录 {fqdn} " if not error_code and not error_msg else error_msg
-                logger.info(f"{error_msg} {error_code}")
+                logger.info(f"[{task_id}] {error_msg} {error_code}")
                 dingtalk.notice_dns_result(fqdn, list(iptool.public_ipv6), error_msg)
 
 
