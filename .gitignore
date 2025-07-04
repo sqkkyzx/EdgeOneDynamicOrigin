@@ -3,4 +3,4 @@
 /config.yaml
 /eodo.log
 /uv.lock
-/log.*
+/log/*
