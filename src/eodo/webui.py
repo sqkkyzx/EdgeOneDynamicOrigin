@@ -165,7 +165,7 @@ def main_ui():
             with col1:
                 st.write(zone_id)
             with col2:
-                if st.button(f"删除", key=f"delete_{i}"):
+                if st.button(f"删除", key=f"delete_zone_{i}"):
                     edgeone_zone_ids.remove(zone_id)
                     config["EdgeOneZoneId"] = edgeone_zone_ids
                     save_config(config)
@@ -202,7 +202,7 @@ def main_ui():
             with col3:
                 st.write(top_domain)
             with col4:
-                if st.button(f"删除", key=f"delete_{i}"):
+                if st.button(f"删除", key=f"delete_domain_{i}"):
                     dns_pod_records.remove(record)
                     config["DnsPodRecord"] = dns_pod_records
                     save_config(config)
