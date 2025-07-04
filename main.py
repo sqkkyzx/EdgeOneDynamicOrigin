@@ -21,7 +21,7 @@ def _setup_logging():
     _logger = logging.getLogger()
     _logger.setLevel(logging.INFO)
 
-    file_handler = RotatingFileHandler("log.txt", maxBytes=200 * 1024, backupCount=1, encoding="utf-8")
+    file_handler = RotatingFileHandler("log/log.txt", maxBytes=200 * 1024, backupCount=1, encoding="utf-8")
     file_handler.setLevel(logging.INFO)
 
     console_handler = logging.StreamHandler()

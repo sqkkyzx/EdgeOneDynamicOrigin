@@ -26,7 +26,7 @@ def save_config(config):
 
 # 读取日志文件
 def read_logs():
-    log_file = "log.txt"
+    log_file = "log/log.txt"
     if os.path.exists(log_file):
         try:
             with open(log_file, 'r', encoding='utf-8') as f:
