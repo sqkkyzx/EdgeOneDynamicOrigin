@@ -4,8 +4,8 @@ import os
 
 # 读取配置文件
 def read_config():
-    if os.path.exists("config.yaml"):
-        with open("config.yaml", 'r', encoding='utf-8') as file:
+    if os.path.exists("../config.yaml"):
+        with open("../config.yaml", 'r', encoding='utf-8') as file:
             try:
                 config = yaml.safe_load(file)
             except yaml.YAMLError as exc:
@@ -17,7 +17,7 @@ def read_config():
 
 # 保存配置文件
 def save_config(config):
-    with open("config.yaml", 'w', encoding='utf-8') as file:
+    with open("../config.yaml", 'w', encoding='utf-8') as file:
         try:
             yaml.dump(config, file, allow_unicode=True)
             st.success("配置文件保存成功！")
@@ -26,7 +26,7 @@ def save_config(config):
 
 # 读取日志文件
 def read_logs():
-    log_file = "log/log.txt"
+    log_file = "../log/log.txt"
     if os.path.exists(log_file):
         try:
             with open(log_file, 'r', encoding='utf-8') as f:
@@ -44,7 +44,7 @@ def main():
     st.title("EdgeOne 配置管理")
 
     # 创建选项卡
-    tab1, tab2 = st.tabs(["配置管理", "日志展示"])
+    tab1, tab2 = st.tabs(["配置管理", "运行日志"])
 
     with tab1:
         # 读取当前配置
@@ -110,7 +110,7 @@ def main():
         dingtalk_webhook = st.text_input("DingTalkWebhook", value=config.get("DingTalkWebhook", ""))
 
         # 保存配置
-        if st.button("保存配置"):
+        if st.button("保存所有配置"):
             config["TencentCloud"] = {
                 "SecretId": secret_id,
                 "SecretKey": secret_key
@@ -121,7 +121,6 @@ def main():
             save_config(config)
 
     with tab2:
-        st.header("日志展示")
         logs = read_logs()
         st.code(logs, language="plaintext")
 
