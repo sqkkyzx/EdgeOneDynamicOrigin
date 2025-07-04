@@ -229,17 +229,21 @@ class IPv6Tool:
             for addr_info in addr_infos
             if addr_info[0] == socket.AF_INET6 and addr_info[4][3] == 0
         ]
+        ipv6_list.sort()
         return ipv6_list
 
     def filter_public_ipv6(self):
         if self.ipv6:
-            public_ipv6_list = [ipv6 for ipv6 in self.ipv6 if self.ipv6_ping_test(ipv6)]
-            logger.info(f"本机公网 IPV6 地址为: {public_ipv6_list}")
-        else:
-            logger.info(f"无法验证公网 IPV6 地址，将根据 ISP 前缀筛选。")
+            # public_ipv6_list = [ipv6 for ipv6 in self.ipv6 if self.ipv6_ping_test(ipv6)]
+            # logger.info(f"本机公网 IPV6 地址为: {public_ipv6_list}")
+            # if not public_ipv6_list:
+            #     logger.info(f"无法验证公网 IPV6 地址，将根据 ISP 前缀筛选。")
+            #     public_ipv6_list = [ipv6 for ipv6 in self.ipv6 if ipv6.startswith("240e") or ipv6.startswith("2408") or ipv6.startswith("2409")]
+            # if public_ipv6_list:
+            #     public_ipv6_list.sort()
+            #     return set(public_ipv6_list)
             public_ipv6_list = [ipv6 for ipv6 in self.ipv6 if ipv6.startswith("240e") or ipv6.startswith("2408") or ipv6.startswith("2409")]
-
-        if public_ipv6_list:
+            public_ipv6_list.sort()
             return set(public_ipv6_list)
         else:
             return None
@@ -310,7 +314,9 @@ def main():
 
             if len(origin_groups) >= 1:
                 group_id = origin_groups[0].get('GroupId')
-                records = set([i.get('Record') for i in origin_groups[0].get('Records')])
+                old_list = [i.get('Record') for i in origin_groups[0].get('Records')]
+                old_list.sort()
+                records = set(old_list)
 
                 if iptool.public_ipv6 == records:
                     logger.info(f"公网 IPV6 地址未发生变更，站点 {zone} 的源站组 {hostname} 无需更新。")
