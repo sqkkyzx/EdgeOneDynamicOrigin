@@ -8,7 +8,7 @@ import os
 from pathlib import Path
 from eodo import task
 
-v = "0.1.8"
+v = "0.1.9"
 home_dir = Path.home()
 temp_dir = tempfile.gettempdir()
 
