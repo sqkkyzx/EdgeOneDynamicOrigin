@@ -139,6 +139,7 @@ def main_ui():
 
         # 腾讯云密钥配置
         st.header("腾讯云密钥配置")
+        st.write("可以在 https://console.cloud.tencent.com/cam/capi 创建API密钥")
         secret_id = st.text_input("SecretId", value=config.get("TencentCloud", {}).get("SecretId", ""))
         secret_key = st.text_input("SecretKey", value=config.get("TencentCloud", {}).get("SecretKey", ""), type="password")
         if st.button("保存"):
@@ -150,10 +151,11 @@ def main_ui():
 
         # EdgeOne 站点配置
         st.header("EdgeOne 站点配置")
+        st.write("ZoneID 在站点列表 https://console.cloud.tencent.com/edgeone/zones 查询")
 
         col1, col2 = st.columns([3, 1])
         with col1:
-            st.write("顶级域名")
+            st.write("ZoneID")
         with col2:
             st.write("操作")
 
@@ -205,7 +207,7 @@ def main_ui():
                     save_config(config)
 
         new_sub_domain = st.text_input("新增子域名")
-        new_record_type = st.text_input("新增记录类型")
+        new_record_type = st.text_input("新增记录类型", value="AAAA")
         new_top_domain = st.text_input("新增顶级域名")
         if st.button("添加 DnsPod 记录") and new_sub_domain and new_record_type and new_top_domain:
             new_record = f"{new_sub_domain}|{new_record_type}|{new_top_domain}"
