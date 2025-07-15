@@ -1,6 +1,6 @@
 [project]
 name = "eodo"
-version = "0.1.9"
+version = "0.1.10"
 description = "EdgeOneDynamicOrigin"
 readme = "README.md"
 requires-python = ">=3.12"
@@ -9,6 +9,7 @@ dependencies = [
     "PyYAML",
     "streamlit",
     "schedule",
+    "psutil"
 ]
 
 [build-system]

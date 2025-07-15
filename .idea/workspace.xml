@@ -4,8 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="bfa266d7-3727-41c8-a53b-216ff099a3fa" name="更改" comment="docs(README): 更新使用说明并调整.gitignore&#10;&#10;- 修改 README.md 中关于操作系统的说明，明确脚本主要适用于 Windows 系统&#10;- 更新 .gitignore 文件，移除一些不必要的忽略项">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+    <list default="true" id="bfa266d7-3727-41c8-a53b-216ff099a3fa" name="更改" comment="chore: 添加 IDE 配置文件和 Python 版本&#10;&#10;- 添加 .idea 目录，包含 IDE 配置文件&#10;- 添加 .python-version 文件，指定 Python3.12&#10;- 更新 .gitignore，移除已忽略的文件">
+      <change beforePath="$PROJECT_DIR$/.idea/EdgeOneDynamicOrigin.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/EdgeOneDynamicOrigin.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyproject.toml" beforeDir="false" afterPath="$PROJECT_DIR$/pyproject.toml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/eodo/task.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/eodo/task.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -49,6 +55,7 @@
   </component>
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
+    &quot;ASKED_MARK_IGNORED_FILES_AS_EXCLUDED&quot;: &quot;true&quot;,
     &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
     &quot;Python.__test__.executor&quot;: &quot;Run&quot;,
     &quot;Python.main.executor&quot;: &quot;Run&quot;,
@@ -61,7 +68,7 @@
     &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
     &quot;git-widget-placeholder&quot;: &quot;master&quot;,
     &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;N:/EdgeOneDynamicOrigin&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/PycharmProjects/EdgeOneDynamicOrigin&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
@@ -263,7 +270,11 @@
       <workItem from="1751643861020" duration="44000" />
       <workItem from="1751643978584" duration="8562000" />
       <workItem from="1751653288451" duration="14474000" />
-      <workItem from="1751668531196" duration="20000" />
+      <workItem from="1751668531196" duration="58000" />
+      <workItem from="1751956029970" duration="5000" />
+      <workItem from="1751956051161" duration="3118000" />
+      <workItem from="1751994548195" duration="637000" />
+      <workItem from="1752597377498" duration="2157000" />
     </task>
     <task id="LOCAL-00001" summary="new">
       <option name="closed" value="true" />
@@ -617,7 +628,15 @@
       <option name="project" value="LOCAL" />
       <updated>1751667767450</updated>
     </task>
-    <option name="localTasksCounter" value="45" />
+    <task id="LOCAL-00045" summary="chore: 添加 IDE 配置文件和 Python 版本&#10;&#10;- 添加 .idea 目录，包含 IDE 配置文件&#10;- 添加 .python-version 文件，指定 Python3.12&#10;- 更新 .gitignore，移除已忽略的文件">
+      <option name="closed" value="true" />
+      <created>1751668569670</created>
+      <option name="number" value="00045" />
+      <option name="presentableId" value="LOCAL-00045" />
+      <option name="project" value="LOCAL" />
+      <updated>1751668569670</updated>
+    </task>
+    <option name="localTasksCounter" value="46" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -635,7 +654,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="不再通过 6.ipw.cn 获取地址，直接从网卡设备获取。&#10;如果无法检测IPv6地址，则跳过更新。" />
     <MESSAGE value="在无法使用 ipw.cn 验证公网地址时，使用 ISP 下发 ipv6 地址的前缀筛选" />
     <MESSAGE value="更改了 DNS 解析配置格式，并修复了无效解析记录删除的错误" />
     <MESSAGE value="feat(win_iptable): 更新添加防火墙规则函数默认协议参数&#10;&#10;- 将 add_firewall_rule函数的默认协议参数从 &quot;TCP&quot; 修改为 &quot;Any&quot;，以适应更广泛的网络通信需求&#10;&#10;- 此修改允许函数在未指定协议时，默认允许所有类型的网络流量" />
@@ -660,7 +678,8 @@
     <MESSAGE value="fix(webui): 修复删除按钮的 key 重复问题&#10;&#10;- 将删除 zone 的按钮 key 从 f&quot;delete_{i}&quot; 修改为 f&quot;delete_zone_{i}&quot;&#10;- 将删除域名的按钮 key从 f&quot;delete_{i}&quot; 修改为 f&quot;delete_domain_{i}&quot;- 通过增加特定前缀来区分不同类型的删除操作，避免 key 冲突" />
     <MESSAGE value="build: 更新版本号至 0.1.9&#10;&#10;- 在 pyproject.toml 中将项目版本从 0.1.8 修改为 0.1.9&#10;- 在 src/eodo/webui.py 中更新版本变量 v 从 0.1.8 到 0.1.9" />
     <MESSAGE value="docs(README): 更新使用说明并调整.gitignore&#10;&#10;- 修改 README.md 中关于操作系统的说明，明确脚本主要适用于 Windows 系统&#10;- 更新 .gitignore 文件，移除一些不必要的忽略项" />
-    <option name="LAST_COMMIT_MESSAGE" value="docs(README): 更新使用说明并调整.gitignore&#10;&#10;- 修改 README.md 中关于操作系统的说明，明确脚本主要适用于 Windows 系统&#10;- 更新 .gitignore 文件，移除一些不必要的忽略项" />
+    <MESSAGE value="chore: 添加 IDE 配置文件和 Python 版本&#10;&#10;- 添加 .idea 目录，包含 IDE 配置文件&#10;- 添加 .python-version 文件，指定 Python3.12&#10;- 更新 .gitignore，移除已忽略的文件" />
+    <option name="LAST_COMMIT_MESSAGE" value="chore: 添加 IDE 配置文件和 Python 版本&#10;&#10;- 添加 .idea 目录，包含 IDE 配置文件&#10;- 添加 .python-version 文件，指定 Python3.12&#10;- 更新 .gitignore，移除已忽略的文件" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/EdgeOneDynamicOrigin$win_iptable.coverage" NAME="win_iptable 覆盖结果" MODIFIED="1719360566721" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
