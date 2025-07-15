@@ -4,6 +4,8 @@ import json
 import logging
 import re
 import socket
+import psutil
+import ipaddress
 import time
 from datetime import datetime, timezone
 from logging.handlers import RotatingFileHandler
@@ -200,23 +202,32 @@ class QcloudClient:
 
 class IPv6Tool:
     def __init__(self):
-        self.ipv6:list[str]|None = self.get_ipv6_list()
-        self.public_ipv6:set[str]|None = self.filter_public_ipv6()
+        # self.ipv6:list[str]|None = self.get_ipv6_list()
+        # self.public_ipv6:set[str]|None = self.filter_public_ipv6()
+        self.public_ipv6:set[str]|None = self.get_ipv6_list()
+
+    def get_ipv6_list(self):
+        ipv6_list = []
+        addrs = psutil.net_if_addrs()
+        for iface, addr_list in addrs.items():
+            for addr in addr_list:
+                ip = addr.address.split('%')[0]
+                if addr.family == socket.AF_INET6 and self.is_public_ipv6(ip):
+                    ipv6_list.append(ip)
+        return set(sorted(ipv6_list))
 
     @staticmethod
-    def get_ipv6_list():
-        addr_infos = socket.getaddrinfo(socket.gethostname(), None)
-        ipv6_list = [
-            addr_info[4][0]
-            for addr_info in addr_infos
-            if addr_info[0] == socket.AF_INET6 and addr_info[4][3] == 0
-        ]
-        ipv6_list.sort()
-        return ipv6_list
+    def is_public_ipv6(ip):
+        try:
+            addr = ipaddress.IPv6Address(ip)
+            return not (addr.is_link_local or addr.is_private or addr.is_loopback or addr.is_unspecified)
+        except ValueError:
+            return False  # 非法IP，就认为不是公网
 
     def filter_public_ipv6(self):
         if self.ipv6:
-            public_ipv6_list = [ipv6 for ipv6 in self.ipv6 if ipv6.startswith("240e") or ipv6.startswith("2408") or ipv6.startswith("2409")]
+            public_ipv6_list = [
+                ipv6 for ipv6 in self.ipv6 if ipv6.startswith("240e") or ipv6.startswith("2408") or ipv6.startswith("2409")]
             public_ipv6_list.sort()
             return set(public_ipv6_list)
         else:
