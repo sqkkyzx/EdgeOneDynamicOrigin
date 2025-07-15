@@ -8,6 +8,18 @@ EdgeOne 是腾讯云的边缘安全加速平台。该脚本为其提供动态更
 
 ### 使用方法
 
-1. 安装：`pip install eodo -U`
-2. 在 `http://localhost:54321` 中配置必要的配置项。
-3. 运行 `eodo -i 15 -p 54321` 以启动。 -i 15 表示每 15 分钟检查一次源站组 IP 的变化，-p 54321 表示监听端口为 54321。
+#### windows
+1. 安装 `pip install eodo`
+2. 运行 `eodo -i 15 -p 54321`以启动。 -i 15 表示每 15 分钟检查一次源站组 IP 的变化，-p 54321 表示监听端口为 54321。
+3. 在 `http://localhost:54321` 中配置必要的配置项。
+
+#### ubuntu
+1. 安装 `pip3 install eodo -U --break-system-packages`
+2. 运行 `export PATH="$HOME/.local/bin:$PATH" && source ~/.bashrc` 将 ~/.local/bin 加入 PATH
+3. 运行 `eodo -i 15 -p 54321`以启动。 -i 15 表示每 15 分钟检查一次源站组 IP 的变化，-p 54321 表示监听端口为 54321。
+4. 在 `http://localhost:54321` 中配置必要的配置项。
+
+
+#### 说明
+
+持久化运行可自行配置 任务计划程序 或 systemd 服务。

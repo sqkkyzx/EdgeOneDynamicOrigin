@@ -4,14 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="bfa266d7-3727-41c8-a53b-216ff099a3fa" name="更改" comment="chore: 添加 IDE 配置文件和 Python 版本&#10;&#10;- 添加 .idea 目录，包含 IDE 配置文件&#10;- 添加 .python-version 文件，指定 Python3.12&#10;- 更新 .gitignore，移除已忽略的文件">
-      <change beforePath="$PROJECT_DIR$/.idea/EdgeOneDynamicOrigin.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/EdgeOneDynamicOrigin.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+    <list default="true" id="bfa266d7-3727-41c8-a53b-216ff099a3fa" name="更改" comment="refactor(IPv6Tool):重构获取公网 IPv6 地址的方法&#10;&#10;- 使用 psutil 库获取网络接口信息，替代 socket 库&#10;- 添加 is_public_ipv6 静态方法判断 IPv6 地址是否为公网地址&#10;- 修改 get_ipv6_list 方法，使用新逻辑判断并收集公网 IPv6 地址&#10;- 优化代码结构，提高可读性和可维护性">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pyproject.toml" beforeDir="false" afterPath="$PROJECT_DIR$/pyproject.toml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/eodo/task.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/eodo/task.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -274,7 +269,7 @@
       <workItem from="1751956029970" duration="5000" />
       <workItem from="1751956051161" duration="3118000" />
       <workItem from="1751994548195" duration="637000" />
-      <workItem from="1752597377498" duration="2157000" />
+      <workItem from="1752597377498" duration="3462000" />
     </task>
     <task id="LOCAL-00001" summary="new">
       <option name="closed" value="true" />
@@ -636,7 +631,23 @@
       <option name="project" value="LOCAL" />
       <updated>1751668569670</updated>
     </task>
-    <option name="localTasksCounter" value="46" />
+    <task id="LOCAL-00046" summary="chore: 添加 IDE 配置文件和 Python 版本&#10;&#10;- 添加 .idea 目录，包含 IDE 配置文件&#10;- 添加 .python-version 文件，指定 Python3.12&#10;- 更新 .gitignore，移除已忽略的文件">
+      <option name="closed" value="true" />
+      <created>1752599587632</created>
+      <option name="number" value="00046" />
+      <option name="presentableId" value="LOCAL-00046" />
+      <option name="project" value="LOCAL" />
+      <updated>1752599587632</updated>
+    </task>
+    <task id="LOCAL-00047" summary="refactor(IPv6Tool):重构获取公网 IPv6 地址的方法&#10;&#10;- 使用 psutil 库获取网络接口信息，替代 socket 库&#10;- 添加 is_public_ipv6 静态方法判断 IPv6 地址是否为公网地址&#10;- 修改 get_ipv6_list 方法，使用新逻辑判断并收集公网 IPv6 地址&#10;- 优化代码结构，提高可读性和可维护性">
+      <option name="closed" value="true" />
+      <created>1752599605774</created>
+      <option name="number" value="00047" />
+      <option name="presentableId" value="LOCAL-00047" />
+      <option name="project" value="LOCAL" />
+      <updated>1752599605774</updated>
+    </task>
+    <option name="localTasksCounter" value="48" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -654,7 +665,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="在无法使用 ipw.cn 验证公网地址时，使用 ISP 下发 ipv6 地址的前缀筛选" />
     <MESSAGE value="更改了 DNS 解析配置格式，并修复了无效解析记录删除的错误" />
     <MESSAGE value="feat(win_iptable): 更新添加防火墙规则函数默认协议参数&#10;&#10;- 将 add_firewall_rule函数的默认协议参数从 &quot;TCP&quot; 修改为 &quot;Any&quot;，以适应更广泛的网络通信需求&#10;&#10;- 此修改允许函数在未指定协议时，默认允许所有类型的网络流量" />
     <MESSAGE value="refactor(main): 优化 IPv6 地址处理逻辑&#10;&#10;- 对 IPv6 地址列表进行排序&#10;- 注释掉未使用的公网 IPv6 地址验证代码&#10;- 优化公网 IPv6 地址筛选逻辑，根据 ISP 前缀筛选&#10;- 对记录列表进行排序，确保一致性" />
@@ -679,7 +689,8 @@
     <MESSAGE value="build: 更新版本号至 0.1.9&#10;&#10;- 在 pyproject.toml 中将项目版本从 0.1.8 修改为 0.1.9&#10;- 在 src/eodo/webui.py 中更新版本变量 v 从 0.1.8 到 0.1.9" />
     <MESSAGE value="docs(README): 更新使用说明并调整.gitignore&#10;&#10;- 修改 README.md 中关于操作系统的说明，明确脚本主要适用于 Windows 系统&#10;- 更新 .gitignore 文件，移除一些不必要的忽略项" />
     <MESSAGE value="chore: 添加 IDE 配置文件和 Python 版本&#10;&#10;- 添加 .idea 目录，包含 IDE 配置文件&#10;- 添加 .python-version 文件，指定 Python3.12&#10;- 更新 .gitignore，移除已忽略的文件" />
-    <option name="LAST_COMMIT_MESSAGE" value="chore: 添加 IDE 配置文件和 Python 版本&#10;&#10;- 添加 .idea 目录，包含 IDE 配置文件&#10;- 添加 .python-version 文件，指定 Python3.12&#10;- 更新 .gitignore，移除已忽略的文件" />
+    <MESSAGE value="refactor(IPv6Tool):重构获取公网 IPv6 地址的方法&#10;&#10;- 使用 psutil 库获取网络接口信息，替代 socket 库&#10;- 添加 is_public_ipv6 静态方法判断 IPv6 地址是否为公网地址&#10;- 修改 get_ipv6_list 方法，使用新逻辑判断并收集公网 IPv6 地址&#10;- 优化代码结构，提高可读性和可维护性" />
+    <option name="LAST_COMMIT_MESSAGE" value="refactor(IPv6Tool):重构获取公网 IPv6 地址的方法&#10;&#10;- 使用 psutil 库获取网络接口信息，替代 socket 库&#10;- 添加 is_public_ipv6 静态方法判断 IPv6 地址是否为公网地址&#10;- 修改 get_ipv6_list 方法，使用新逻辑判断并收集公网 IPv6 地址&#10;- 优化代码结构，提高可读性和可维护性" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/EdgeOneDynamicOrigin$win_iptable.coverage" NAME="win_iptable 覆盖结果" MODIFIED="1719360566721" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
