@@ -6,6 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="bfa266d7-3727-41c8-a53b-216ff099a3fa" name="更改" comment="feat:重构为 FastAPI服务&#10;&#10;- 重新设计了应用架构，使用 FastAPI 替代 Streamlit&#10;- 优化了定时任务调度机制&#10;- 改进了 IPv6 地址获取和验证方法">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/eodo/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/eodo/app.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -265,15 +267,7 @@
       <workItem from="1752603353765" duration="7000" />
       <workItem from="1752605223481" duration="956000" />
       <workItem from="1752687983335" duration="165000" />
-      <workItem from="1752911625311" duration="14456000" />
-    </task>
-    <task id="LOCAL-00002" summary="new">
-      <option name="closed" value="true" />
-      <created>1719349943209</created>
-      <option name="number" value="00002" />
-      <option name="presentableId" value="LOCAL-00002" />
-      <option name="project" value="LOCAL" />
-      <updated>1719349943209</updated>
+      <workItem from="1752911625311" duration="14971000" />
     </task>
     <task id="LOCAL-00003" summary="new">
       <option name="closed" value="true" />
@@ -659,7 +653,15 @@
       <option name="project" value="LOCAL" />
       <updated>1752926332115</updated>
     </task>
-    <option name="localTasksCounter" value="51" />
+    <task id="LOCAL-00051" summary="feat:重构为 FastAPI服务&#10;&#10;- 重新设计了应用架构，使用 FastAPI 替代 Streamlit&#10;- 优化了定时任务调度机制&#10;- 改进了 IPv6 地址获取和验证方法">
+      <option name="closed" value="true" />
+      <created>1752926373373</created>
+      <option name="number" value="00051" />
+      <option name="presentableId" value="LOCAL-00051" />
+      <option name="project" value="LOCAL" />
+      <updated>1752926373373</updated>
+    </task>
+    <option name="localTasksCounter" value="52" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

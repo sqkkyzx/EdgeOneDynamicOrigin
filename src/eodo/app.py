@@ -1,3 +1,4 @@
+import argparse
 import os
 import hashlib
 import hmac
@@ -228,7 +229,6 @@ class IPv6Tool:
             for addr in addr_list:
                 ip = addr.address.split('%')[0]
                 if addr.family == socket.AF_INET6 and self.is_public_ipv6(ip):
-                    logger.info(f"[{self.task_id}] 正在检测 IP <{ip}>")
                     if self.public_ipv6_check(ip):
                         ipv6_list.append(ip)
                     else:
@@ -414,7 +414,7 @@ def run_task_in_background():
         cron_logger.error(f"[{task_id}] 异常")
         last_status.update({"id": task_id, "result": "异常"})
 
-def load_interval():
+def load_interval(default_interval=15):
     cfgfile = os.path.join(str(HOME_DIR), ".eodo.config.yaml")
     if os.path.exists(cfgfile):
         with open(cfgfile, "r", encoding="utf-8") as f:
@@ -425,7 +425,7 @@ def load_interval():
                 return interval
             except Exception as e:
                 logger.debug(e)
-    return 15  # 默认值
+    return default_interval  # 默认值
 
 class TaskScheduler:
     def __init__(self, interval_min=15):
@@ -563,10 +563,14 @@ async def set_interval(request: Request):
 
 
 def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-p', '--port', type=int, default=54321, help='Web UI 端口')
+
+    args = parser.parse_args()
     global scheduler
     scheduler = TaskScheduler(interval_min=load_interval())
     scheduler.start_scheduler()
-    uvicorn.run(app, host="0.0.0.0", port=54321)
+    uvicorn.run(app, host="0.0.0.0", port=args.port)
 
 
 if __name__ == "__main__":
