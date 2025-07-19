@@ -4,16 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="bfa266d7-3727-41c8-a53b-216ff099a3fa" name="更改" comment="feat(network): 优化 IPv6地址获取逻辑并添加网络接口选择功能&#10;&#10;- 重构 IPv6Tool 类，优化公网 IPv6地址获取逻辑&#10;- 在 webui.py 中添加网络接口选择功能&#10;- 更新 app.py 和 task.py 以支持新的 IPv6 地址获取方法&#10;- 升级版本号至 0.1.11">
-      <change afterPath="$PROJECT_DIR$/.idea/webResources.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/eodo/static/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/EdgeOneDynamicOrigin.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/EdgeOneDynamicOrigin.iml" afterDir="false" />
+    <list default="true" id="bfa266d7-3727-41c8-a53b-216ff099a3fa" name="更改" comment="feat:重构为 FastAPI服务&#10;&#10;- 重新设计了应用架构，使用 FastAPI 替代 Streamlit&#10;- 优化了定时任务调度机制&#10;- 改进了 IPv6 地址获取和验证方法">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pyproject.toml" beforeDir="false" afterPath="$PROJECT_DIR$/pyproject.toml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/eodo/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/eodo/app.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/eodo/task.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/eodo/webui.py" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -273,15 +265,7 @@
       <workItem from="1752603353765" duration="7000" />
       <workItem from="1752605223481" duration="956000" />
       <workItem from="1752687983335" duration="165000" />
-      <workItem from="1752911625311" duration="14411000" />
-    </task>
-    <task id="LOCAL-00001" summary="new">
-      <option name="closed" value="true" />
-      <created>1719349615428</created>
-      <option name="number" value="00001" />
-      <option name="presentableId" value="LOCAL-00001" />
-      <option name="project" value="LOCAL" />
-      <updated>1719349615429</updated>
+      <workItem from="1752911625311" duration="14456000" />
     </task>
     <task id="LOCAL-00002" summary="new">
       <option name="closed" value="true" />
@@ -667,7 +651,15 @@
       <option name="project" value="LOCAL" />
       <updated>1752601004499</updated>
     </task>
-    <option name="localTasksCounter" value="50" />
+    <task id="LOCAL-00050" summary="feat:重构为 FastAPI服务&#10;&#10;- 重新设计了应用架构，使用 FastAPI 替代 Streamlit&#10;- 优化了定时任务调度机制&#10;- 改进了 IPv6 地址获取和验证方法">
+      <option name="closed" value="true" />
+      <created>1752926332115</created>
+      <option name="number" value="00050" />
+      <option name="presentableId" value="LOCAL-00050" />
+      <option name="project" value="LOCAL" />
+      <updated>1752926332115</updated>
+    </task>
+    <option name="localTasksCounter" value="51" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -685,7 +677,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="feat(win_iptable): 更新添加防火墙规则函数默认协议参数&#10;&#10;- 将 add_firewall_rule函数的默认协议参数从 &quot;TCP&quot; 修改为 &quot;Any&quot;，以适应更广泛的网络通信需求&#10;&#10;- 此修改允许函数在未指定协议时，默认允许所有类型的网络流量" />
     <MESSAGE value="refactor(main): 优化 IPv6 地址处理逻辑&#10;&#10;- 对 IPv6 地址列表进行排序&#10;- 注释掉未使用的公网 IPv6 地址验证代码&#10;- 优化公网 IPv6 地址筛选逻辑，根据 ISP 前缀筛选&#10;- 对记录列表进行排序，确保一致性" />
     <MESSAGE value="feat: 添加 WebUI 配置管理&#10;&#10;- 新增 webui.py 文件，实现了一个基于 Streamlit 的 WebUI 配置管理界面- 可以配置腾讯云密钥、EdgeOne 站点、DnsPod 记录和钉钉机器人等信息&#10;- 配置数据保存在 config.yaml 文件中&#10;- 更新了 .idea相关文件，修改了项目 SDK 设置" />
     <MESSAGE value="feat(webui): 优化配置管理并添加日志展示功能&#10;&#10;- 简化配置保存逻辑，提高用户体验&#10;- 新增日志展示选项卡，实时显示系统日志&#10;- 优化异常处理，增加错误提示信息&#10;- 调整页面布局，使用标签页区分配置管理和日志展示" />
@@ -710,7 +701,8 @@
     <MESSAGE value="refactor(IPv6Tool):重构获取公网 IPv6 地址的方法&#10;&#10;- 使用 psutil 库获取网络接口信息，替代 socket 库&#10;- 添加 is_public_ipv6 静态方法判断 IPv6 地址是否为公网地址&#10;- 修改 get_ipv6_list 方法，使用新逻辑判断并收集公网 IPv6 地址&#10;- 优化代码结构，提高可读性和可维护性" />
     <MESSAGE value="docs(README): 更新使用说明，增加 Windows 和 Ubuntu 系统的安装步骤&#10;&#10;- 新增 Windows系统安装步骤&#10;- 新增 Ubuntu 系统安装步骤&#10;- 添加说明，建议用户配置任务计划程序或 systemd 服务以实现持久化运行" />
     <MESSAGE value="." />
-    <option name="LAST_COMMIT_MESSAGE" value="." />
+    <MESSAGE value="feat:重构为 FastAPI服务&#10;&#10;- 重新设计了应用架构，使用 FastAPI 替代 Streamlit&#10;- 优化了定时任务调度机制&#10;- 改进了 IPv6 地址获取和验证方法" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat:重构为 FastAPI服务&#10;&#10;- 重新设计了应用架构，使用 FastAPI 替代 Streamlit&#10;- 优化了定时任务调度机制&#10;- 改进了 IPv6 地址获取和验证方法" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/EdgeOneDynamicOrigin$win_iptable.coverage" NAME="win_iptable 覆盖结果" MODIFIED="1719360566721" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
