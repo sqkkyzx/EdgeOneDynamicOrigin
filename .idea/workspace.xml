@@ -4,10 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="bfa266d7-3727-41c8-a53b-216ff099a3fa" name="更改" comment="feat:重构为 FastAPI服务&#10;&#10;- 重新设计了应用架构，使用 FastAPI 替代 Streamlit&#10;- 优化了定时任务调度机制&#10;- 改进了 IPv6 地址获取和验证方法">
+    <list default="true" id="bfa266d7-3727-41c8-a53b-216ff099a3fa" name="更改" comment="feat:重构为 FastAPI服务并优化相关功能&#10;&#10;- 重新设计了应用架构，使用 FastAPI 替代 Streamlit&#10;- 优化了定时任务调度机制&#10;- 改进了 IPv6 地址获取和验证方法&#10;- 添加了命令行参数解析，支持自定义端口&#10;- 更新了 README 文档，明确了新的运行方式">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/eodo/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/eodo/app.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyproject.toml" beforeDir="false" afterPath="$PROJECT_DIR$/pyproject.toml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -267,15 +266,7 @@
       <workItem from="1752603353765" duration="7000" />
       <workItem from="1752605223481" duration="956000" />
       <workItem from="1752687983335" duration="165000" />
-      <workItem from="1752911625311" duration="14971000" />
-    </task>
-    <task id="LOCAL-00003" summary="new">
-      <option name="closed" value="true" />
-      <created>1719356578841</created>
-      <option name="number" value="00003" />
-      <option name="presentableId" value="LOCAL-00003" />
-      <option name="project" value="LOCAL" />
-      <updated>1719356578841</updated>
+      <workItem from="1752911625311" duration="15008000" />
     </task>
     <task id="LOCAL-00004" summary="更新使用方法">
       <option name="closed" value="true" />
@@ -661,7 +652,15 @@
       <option name="project" value="LOCAL" />
       <updated>1752926373373</updated>
     </task>
-    <option name="localTasksCounter" value="52" />
+    <task id="LOCAL-00052" summary="feat:重构为 FastAPI服务并优化相关功能&#10;&#10;- 重新设计了应用架构，使用 FastAPI 替代 Streamlit&#10;- 优化了定时任务调度机制&#10;- 改进了 IPv6 地址获取和验证方法&#10;- 添加了命令行参数解析，支持自定义端口&#10;- 更新了 README 文档，明确了新的运行方式">
+      <option name="closed" value="true" />
+      <created>1752926914950</created>
+      <option name="number" value="00052" />
+      <option name="presentableId" value="LOCAL-00052" />
+      <option name="project" value="LOCAL" />
+      <updated>1752926914950</updated>
+    </task>
+    <option name="localTasksCounter" value="53" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -679,7 +678,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="refactor(main): 优化 IPv6 地址处理逻辑&#10;&#10;- 对 IPv6 地址列表进行排序&#10;- 注释掉未使用的公网 IPv6 地址验证代码&#10;- 优化公网 IPv6 地址筛选逻辑，根据 ISP 前缀筛选&#10;- 对记录列表进行排序，确保一致性" />
     <MESSAGE value="feat: 添加 WebUI 配置管理&#10;&#10;- 新增 webui.py 文件，实现了一个基于 Streamlit 的 WebUI 配置管理界面- 可以配置腾讯云密钥、EdgeOne 站点、DnsPod 记录和钉钉机器人等信息&#10;- 配置数据保存在 config.yaml 文件中&#10;- 更新了 .idea相关文件，修改了项目 SDK 设置" />
     <MESSAGE value="feat(webui): 优化配置管理并添加日志展示功能&#10;&#10;- 简化配置保存逻辑，提高用户体验&#10;- 新增日志展示选项卡，实时显示系统日志&#10;- 优化异常处理，增加错误提示信息&#10;- 调整页面布局，使用标签页区分配置管理和日志展示" />
     <MESSAGE value="refactor: 删除 win_iptable.py 文件，因为该功能异常&#10;&#10;该文件包含了以下功能：&#10;- 从 API 获取 IP 地址列表&#10;- 读取和写入以前的 IP地址列表到文件&#10;- 删除和添加防火墙规则" />
@@ -704,7 +702,8 @@
     <MESSAGE value="docs(README): 更新使用说明，增加 Windows 和 Ubuntu 系统的安装步骤&#10;&#10;- 新增 Windows系统安装步骤&#10;- 新增 Ubuntu 系统安装步骤&#10;- 添加说明，建议用户配置任务计划程序或 systemd 服务以实现持久化运行" />
     <MESSAGE value="." />
     <MESSAGE value="feat:重构为 FastAPI服务&#10;&#10;- 重新设计了应用架构，使用 FastAPI 替代 Streamlit&#10;- 优化了定时任务调度机制&#10;- 改进了 IPv6 地址获取和验证方法" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat:重构为 FastAPI服务&#10;&#10;- 重新设计了应用架构，使用 FastAPI 替代 Streamlit&#10;- 优化了定时任务调度机制&#10;- 改进了 IPv6 地址获取和验证方法" />
+    <MESSAGE value="feat:重构为 FastAPI服务并优化相关功能&#10;&#10;- 重新设计了应用架构，使用 FastAPI 替代 Streamlit&#10;- 优化了定时任务调度机制&#10;- 改进了 IPv6 地址获取和验证方法&#10;- 添加了命令行参数解析，支持自定义端口&#10;- 更新了 README 文档，明确了新的运行方式" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat:重构为 FastAPI服务并优化相关功能&#10;&#10;- 重新设计了应用架构，使用 FastAPI 替代 Streamlit&#10;- 优化了定时任务调度机制&#10;- 改进了 IPv6 地址获取和验证方法&#10;- 添加了命令行参数解析，支持自定义端口&#10;- 更新了 README 文档，明确了新的运行方式" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/EdgeOneDynamicOrigin$win_iptable.coverage" NAME="win_iptable 覆盖结果" MODIFIED="1719360566721" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
