@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>EdgeOne Dynamic Origin 控制台</title>
+  <link href="https://unpkg.com/@tabler/core@latest/dist/css/tabler.min.css" rel="stylesheet"/>
+  <style>
+    body { background: #f4f7fa; }
+    .page-center { max-width: 800px; margin: 27px auto; }
+    .tabler-logo {font-size: 1.6rem;font-weight:700;color:#206bc4;margin-bottom:22px;letter-spacing:0.03em;}
+    #logs-modal-pre { min-height:170px; max-height:400px; overflow:auto; font-family:monospace; font-size:1.05em; background:#f7fafb; color: #222;}
+    .mb-4 {margin-bottom:1.4rem;}
+    .card-header {font-weight:bold;}
+    .table thead th {background:#f4f6fb;}
+    .table-vcenter td, .table-vcenter th {vertical-align:middle;}
+    .card .card-body {padding-top: 1.1rem; padding-bottom:1.1rem;}
+    .btn-del {padding:2px 10px;}
+    .form-section-hd {font-size:1.12em;margin-bottom:7px;font-weight:600;}
+  </style>
+</head>
+<body>
+<div class="page page-center">
+  <div class="tabler-logo text-center mb-3">EdgeOne Dynamic Origin 控制台</div>
+  <!-- 状态卡片 -->
+  <div class="card mb-4">
+    <div class="card-header">
+      <div class="card-title">服务状态</div>
+    </div>
+    <div class="card-body">
+      <div id="status" class="mb-2">加载中...</div>
+      <div>
+        <button class="btn btn-blue" onclick="fetchStatus()">刷新状态</button>
+        <button class="btn btn-outline-green m-1" onclick="runTask();">立即执行任务</button>
+        <button class="btn btn-outline-secondary m-1" data-bs-toggle="modal" data-bs-target="#logModal" onclick="openLogModal()">
+          查看日志
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 调度周期卡片 -->
+  <div class="card mb-4">
+    <div class="card-header">
+      <div class="card-title">调度周期设置</div>
+    </div>
+    <div class="card-body">
+      <div class="input-group w-50">
+        <span class="input-group-text">周期(分钟)</span>
+        <input type="number" id="interval" class="form-control" min="1" value="15">
+        <button class="btn btn-primary" onclick="setIntervalM();">修改</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 配置管理 -->
+  <div class="card mb-4">
+    <div class="card-header">
+      <span class="card-title">配置管理</span>
+    </div>
+    <div class="card-body">
+      <form id="configForm" autocomplete="off">
+        <!-- 腾讯云密钥 -->
+        <div class="form-section-hd">腾讯云密钥配置</div>
+        <div class="row g-3 mb-3">
+          <div class="col-md-6">
+            <label class="form-label required">SecretId</label>
+            <input class="form-control" type="text" name="SecretId" id="SecretId" required>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label required">SecretKey</label>
+            <input class="form-control" type="password" name="SecretKey" id="SecretKey" required>
+          </div>
+        </div>
+        <!-- EdgeOne站点配置 -->
+        <div class="form-section-hd">EdgeOne 站点配置</div>
+        <div class="mb-2">
+          <button type="button" class="btn btn-outline-primary btn-sm" onclick="addEdgeOneRow()">增加站点</button>
+        </div>
+        <div style="overflow-x:auto;">
+          <table class="table table-vcenter table-bordered mb-3" id="EdgeOneTable">
+            <thead>
+              <tr>
+                <th>ZoneID</th>
+                <th style="width:60px"></th>
+              </tr>
+            </thead>
+            <tbody>
+            </tbody>
+          </table>
+        </div>
+        <!-- DnsPod记录配置 -->
+        <div class="form-section-hd">DnsPod 记录配置</div>
+        <div class="mb-2">
+          <button type="button" class="btn btn-outline-primary btn-sm" onclick="addDnsRow()">增加记录</button>
+        </div>
+        <div style="overflow-x:auto;">
+          <table class="table table-vcenter table-striped table-bordered mb-3" id="DnsPodTable">
+            <thead>
+              <tr>
+                <th>子域名</th>
+                <th>记录类型</th>
+                <th>顶级域名</th>
+                <th style="width:60px"></th>
+              </tr>
+            </thead>
+            <tbody>
+            </tbody>
+          </table>
+        </div>
+        <!-- 钉钉机器人 -->
+        <div class="form-section-hd">钉钉机器人配置</div>
+        <div class="mb-3">
+          <input class="form-control" type="text" name="DingTalkWebhook" id="DingTalkWebhook" placeholder="https://oapi.dingtalk.com/robot/send?access_token=...">
+        </div>
+        <!-- 网络接口/提交 -->
+        <div class="row">
+          <div class="col-md-4 mb-2">
+            <label class="form-label">选择网络接口</label>
+            <select class="form-select" name="SelectIface" id="SelectIface"></select>
+          </div>
+          <div class="col-md-8 text-end align-self-end d-flex gap-1 justify-content-end align-items-center">
+            <button type="submit" class="btn btn-success" id="submitConfig">
+              保存配置
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- 日志模态窗口 -->
+<div class="modal modal-blur fade" id="logModal" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">最近任务日志</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="关闭"></button>
+      </div>
+      <div class="modal-body">
+        <pre id="logs-modal-pre">加载中...</pre>
+        <div class="d-flex justify-content-between mt-1">
+          <span></span>
+          <button class="btn btn-outline-secondary btn-sm" onclick="fetchLogsModal();">手动刷新</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Toast提示 -->
+<div id="toast" style="
+  display:none;position:fixed;left:50%;bottom:54px;min-width:160px;
+  background:#206bc4;color:#fff;padding:14px 28px;
+  border-radius:8px;z-index:10;font-size:1.08em;transform:translateX(-50%);
+  box-shadow:0 2px 16px #206bc40a;letter-spacing:0.02em;">TOAST
+</div>
+
+<script src="https://unpkg.com/@tabler/core@latest/dist/js/tabler.min.js"></script>
+<script>
+// --- Toast ---
+function showToast(msg, timeout=2200){
+    let t = document.getElementById("toast");
+    t.textContent = msg;
+    t.style.display="block";
+    clearTimeout(t._hid);
+    t._hid = setTimeout(()=>{t.style.display="none"}, timeout);
+}
+
+// 状态
+function fetchStatus(){
+    let dom = document.getElementById('status');
+    dom.innerHTML = '<span class="text-muted">更新中...</span>';
+    fetch('/api/status').then(r=>r.json()).then(res=>{
+        dom.innerHTML = `
+            <b>任务ID:</b> ${res.id||'未知'}<br>
+            <b>任务时间:</b> ${res.time||''}<br>
+            <b>状态:</b> <span class="badge ${res.result==='异常'?'bg-red':(res.result==='结束'?'bg-green':'bg-blue')}">
+            ${res.result||'未知'}</span>
+        `;
+    }).catch(()=>{ dom.innerHTML = '<span class="text-danger">获取失败</span>'; });
+}
+
+// 周期
+function setIntervalM(){
+    let v = Number(document.getElementById('interval').value);
+    document.getElementById('interval').disabled = true;
+    fetch('/api/interval', {method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({interval:v})})
+        .then(res=>res.json()).then(d=>{
+            showToast(d.msg||"设置完成");
+            document.getElementById('interval').disabled = false;
+            fetchConfig();
+        })
+        .catch(()=>{
+            showToast("设置失败",2500);
+            document.getElementById('interval').disabled = false;
+        });
+}
+// ------ EdgeOne 配置 表格
+function addEdgeOneRow(val="") {
+  let tb = document.getElementById("EdgeOneTable").getElementsByTagName("tbody")[0];
+  let tr = tb.insertRow();
+  let td0 = tr.insertCell(); td0.innerHTML = `<input type="text" class="form-control" value="${val}">`;
+  let td1 = tr.insertCell(); td1.innerHTML = `<button type="button" class="btn btn-link text-danger btn-del" onclick="this.closest('tr').remove()">移除</button>`;
+}
+function setEdgeOneTable(arr) {
+  let tb = document.getElementById("EdgeOneTable").getElementsByTagName("tbody")[0];
+  tb.innerHTML = "";
+  (arr||[]).forEach(val=>addEdgeOneRow(val));
+}
+function getEdgeOneZoneArr() {
+  let tb = document.getElementById("EdgeOneTable").getElementsByTagName("tbody")[0];
+  return Array.from(tb.querySelectorAll("tr")).map(tr=>tr.cells[0].querySelector("input").value.trim()).filter(Boolean);
+}
+
+// ------ DnsPod 配置 表格
+function addDnsRow(sub="",typ="AAAA",root="") {
+  let tb = document.getElementById("DnsPodTable").getElementsByTagName("tbody")[0];
+  let tr = tb.insertRow();
+  tr.insertCell().innerHTML = `<input type="text" class="form-control" value="${sub}">`;
+  tr.insertCell().innerHTML = `<select class="form-select" disabled><option value="AAAA">AAAA</option></select>`;
+  tr.insertCell().innerHTML = `<input type="text" class="form-control" value="${root}">`;
+  tr.insertCell().innerHTML = `<button type="button" class="btn btn-link text-danger btn-del" onclick="this.closest('tr').remove()">移除</button>`;
+}
+function setDnsPodTable(arr) {
+  let tb = document.getElementById("DnsPodTable").getElementsByTagName("tbody")[0];
+  tb.innerHTML = "";
+  (arr||[]).forEach(str=>{
+    let [sub,type,root] = (str+"||").split("|");
+    addDnsRow(sub, "AAAA", root||"");
+  });
+}
+function getDnsPodRecordArr() {
+  let tb = document.getElementById("DnsPodTable").getElementsByTagName("tbody")[0];
+  return Array.from(tb.querySelectorAll("tr"))
+      .map(tr=>{
+        let sub = tr.cells[0].querySelector("input").value.trim();
+        let typ = "AAAA";
+        let root = tr.cells[2].querySelector("input").value.trim();
+        return sub && root ? `${sub}|${typ}|${root}` : null;
+      }).filter(Boolean);
+}
+
+// ----  配置  ----
+function fetchConfig(){
+    fetch('/api/config').then(r=>r.json()).then(res=>{
+        document.getElementById('SecretId').value = res?.TencentCloud?.SecretId||"";
+        document.getElementById('SecretKey').value = res?.TencentCloud?.SecretKey||"";
+        setEdgeOneTable(Array.isArray(res?.EdgeOneZoneId) ? res.EdgeOneZoneId : (typeof res.EdgeOneZoneId==="string"?[res.EdgeOneZoneId] : []));
+        setDnsPodTable(Array.isArray(res?.DnsPodRecord) ? res.DnsPodRecord : (typeof res.DnsPodRecord==="string"?[res.DnsPodRecord] : []));
+        document.getElementById('DingTalkWebhook').value = res?.DingTalkWebhook||"";
+        if(res.IntervalMin) document.getElementById('interval').value = res.IntervalMin;
+        fetch('/api/iface').then(r=>r.json()).then(ifaces=>{
+            let sel = document.getElementById('SelectIface');
+            sel.innerHTML = "";
+            ifaces.forEach(i=>{
+                let o = document.createElement('option');
+                o.value = o.textContent = i;
+                if(res.SelectIface==i)o.selected=true;
+                sel.appendChild(o);
+            });
+        });
+    }).catch(()=>{showToast("配置加载失败",2200);});
+}
+document.getElementById('configForm').onsubmit = function(e){
+    e.preventDefault();
+    let data = {
+      TencentCloud: {
+        SecretId: this.SecretId.value.trim(),
+        SecretKey: this.SecretKey.value.trim()
+      },
+      EdgeOneZoneId: getEdgeOneZoneArr(),
+      DnsPodRecord: getDnsPodRecordArr(),
+      DingTalkWebhook: this.DingTalkWebhook.value.trim(),
+      SelectIface: this.SelectIface.value,
+      IntervalMin: Number(document.getElementById('interval').value)||15
+    };
+    document.getElementById('submitConfig').disabled = true;
+    fetch('/api/config', {
+        method: "POST", headers: {"content-type":"application/json"},
+        body: JSON.stringify(data)
+      }).then(r=>r.json()).then(d=>{
+         showToast(d.msg||"配置已保存");
+         fetchConfig();
+         document.getElementById('submitConfig').disabled = false;
+      }).catch(()=>{
+         showToast("提交失败",2300);
+         document.getElementById('submitConfig').disabled = false;
+      });
+};
+// ---- 日志模态 ----
+function fetchLogsModal(){
+    let logsdom = document.getElementById('logs-modal-pre');
+    logsdom.textContent = "加载中...";
+    fetch('/api/logs').then(r=>r.json()).then(res=>{
+        logsdom.textContent = res.logs||"无日志";
+    }).catch(()=>{logsdom.textContent="日志加载失败";});
+}
+function openLogModal(){
+    fetchLogsModal();
+    if(openLogModal._timer) clearInterval(openLogModal._timer);
+    openLogModal._timer = setInterval(fetchLogsModal, 9000);
+    let modal = document.getElementById('logModal');
+    modal.addEventListener('hidden.bs.modal', ()=>{
+        if(openLogModal._timer){ clearInterval(openLogModal._timer); openLogModal._timer = null; }
+    }, {once: true});
+}
+
+// ---- runTask
+function runTask(){
+    showToast("任务启动中...");
+    fetch('/api/run-task', {method:"POST"}).then(_=>{
+        fetchStatus();
+        showToast("任务已触发，请稍后查看结果。");
+    }).catch(()=>{showToast("执行失败",2500);});
+}
+window.onload = function(){
+    fetchStatus();
+    fetchConfig();
+    setInterval(()=>fetchStatus(), 4000);
+}
+</script>
+</body>
+</html>

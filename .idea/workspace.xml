@@ -4,7 +4,17 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="bfa266d7-3727-41c8-a53b-216ff099a3fa" name="更改" comment="docs(README): 更新使用说明，增加 Windows 和 Ubuntu 系统的安装步骤&#10;&#10;- 新增 Windows系统安装步骤&#10;- 新增 Ubuntu 系统安装步骤&#10;- 添加说明，建议用户配置任务计划程序或 systemd 服务以实现持久化运行" />
+    <list default="true" id="bfa266d7-3727-41c8-a53b-216ff099a3fa" name="更改" comment="feat(network): 优化 IPv6地址获取逻辑并添加网络接口选择功能&#10;&#10;- 重构 IPv6Tool 类，优化公网 IPv6地址获取逻辑&#10;- 在 webui.py 中添加网络接口选择功能&#10;- 更新 app.py 和 task.py 以支持新的 IPv6 地址获取方法&#10;- 升级版本号至 0.1.11">
+      <change afterPath="$PROJECT_DIR$/.idea/webResources.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/eodo/static/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/EdgeOneDynamicOrigin.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/EdgeOneDynamicOrigin.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyproject.toml" beforeDir="false" afterPath="$PROJECT_DIR$/pyproject.toml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/eodo/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/eodo/app.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/eodo/task.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/eodo/webui.py" beforeDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -14,6 +24,7 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Python 依赖声明" />
+        <option value="HTML File" />
         <option value="Python Script" />
       </list>
     </option>
@@ -33,10 +44,17 @@
     &quot;accountId&quot;: &quot;9d3116f2-0bce-4e24-9308-0425c6ec6992&quot;
   }
 }</component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/.venv/Lib/site-packages/eodo/webui.py" root0="FORCE_HIGHLIGHTING" />
+  </component>
   <component name="JsBowerSettings">
     <bower-package value="" />
     <bower.json value="" />
   </component>
+  <component name="KubernetesApiPersistence"><![CDATA[{}]]></component>
+  <component name="KubernetesApiProvider"><![CDATA[{
+  "isMigrated": true
+}]]></component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 1
 }</component>
@@ -45,37 +63,41 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ASKED_MARK_IGNORED_FILES_AS_EXCLUDED&quot;: &quot;true&quot;,
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;Python.__test__.executor&quot;: &quot;Run&quot;,
-    &quot;Python.main.executor&quot;: &quot;Run&quot;,
-    &quot;Python.text.executor&quot;: &quot;Run&quot;,
-    &quot;Python.webui.executor&quot;: &quot;Run&quot;,
-    &quot;Python.win_iptable.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/PycharmProjects/EdgeOneDynamicOrigin&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_MARK_IGNORED_FILES_AS_EXCLUDED": "true",
+    "DefaultHtmlFileTemplate": "HTML File",
+    "JavaScript 调试.index.html.executor": "Run",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "Python.__test__.executor": "Run",
+    "Python.app.executor": "Run",
+    "Python.main.executor": "Run",
+    "Python.text.executor": "Run",
+    "Python.webui.executor": "Run",
+    "Python.win_iptable.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "git-widget-placeholder": "master",
+    "ignore.virus.scanning.warn.message": "true",
+    "last_opened_file_path": "C:/PycharmProjects/EdgeOneDynamicOrigin",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\PycharmProjects\EdgeOneDynamicOrigin" />
+      <recent name="C:\PycharmProjects\EdgeOneDynamicOrigin\src\eodo" />
       <recent name="N:\EdgeOneDynamicOrigin" />
       <recent name="N:\EdgeOneDynamicOrigin\src" />
       <recent name="N:\EdgeOneDynamicOrigin\log" />
-      <recent name="C:\Users\Administrator\3D Objects\EdgeOneDynamicOrigin" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\Administrator\3D Objects\EdgeOneDynamicOrigin" />
@@ -87,8 +109,11 @@
       <command value="pip install requests pyyaml" />
     </option>
   </component>
-  <component name="RunManager" selected="Python.text">
-    <configuration name="__test__" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="Python.app">
+    <configuration name="index.html" type="JavascriptDebugType" temporary="true" nameIsGenerated="true" uri="http://localhost:63342/win_iptable.py/static/index.html" useBuiltInWebServerPort="true">
+      <method v="2" />
+    </configuration>
+    <configuration name="app" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="EdgeOneDynamicOrigin" />
       <option name="ENV_FILES" value="" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -97,12 +122,12 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src/eodo" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/__test__.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/eodo/app.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -180,36 +205,13 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="win_iptable" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="EdgeOneDynamicOrigin" />
-      <option name="ENV_FILES" value="" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/win_iptable.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.app" />
+        <item itemvalue="JavaScript 调试.index.html" />
         <item itemvalue="Python.text" />
         <item itemvalue="Python.webui" />
         <item itemvalue="Python.main" />
-        <item itemvalue="Python.win_iptable" />
-        <item itemvalue="Python.__test__" />
       </list>
     </recent_temporary>
   </component>
@@ -267,6 +269,11 @@
       <workItem from="1751956051161" duration="3118000" />
       <workItem from="1751994548195" duration="637000" />
       <workItem from="1752597377498" duration="3584000" />
+      <workItem from="1752600975515" duration="37000" />
+      <workItem from="1752603353765" duration="7000" />
+      <workItem from="1752605223481" duration="956000" />
+      <workItem from="1752687983335" duration="165000" />
+      <workItem from="1752911625311" duration="14411000" />
     </task>
     <task id="LOCAL-00001" summary="new">
       <option name="closed" value="true" />
@@ -652,7 +659,15 @@
       <option name="project" value="LOCAL" />
       <updated>1752600953047</updated>
     </task>
-    <option name="localTasksCounter" value="49" />
+    <task id="LOCAL-00049" summary=".">
+      <option name="closed" value="true" />
+      <created>1752601004499</created>
+      <option name="number" value="00049" />
+      <option name="presentableId" value="LOCAL-00049" />
+      <option name="project" value="LOCAL" />
+      <updated>1752601004499</updated>
+    </task>
+    <option name="localTasksCounter" value="50" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -678,7 +693,6 @@
     <MESSAGE value="build:重构项目并添加 poetry 支持&#10;&#10;- 更新 .gitignore 文件，忽略更多缓存和日志文件&#10;- 移除 Readme.md 中的冗余信息&#10;- 添加 .python-version 文件，指定 Python 3.12&#10;- 新增 pyproject.toml 文件，配置项目依赖和元数据" />
     <MESSAGE value="refactor: 修改日志文件路径&#10;&#10;- 将日志文件路径从 &quot;log.txt&quot; 修改为 &quot;log/log.txt&quot;&#10;- 更新 main.py 和 webui.py 中的相关代码&#10;- 此修改旨在更好地组织项目文件结构，将日志文件放入专门的 log 目录" />
     <MESSAGE value="chore: 更新 .gitignore 文件&#10;&#10;- 将 /log.* 修改为 /log/*，以更准确地忽略 log 目录下的所有文件" />
-    <MESSAGE value="." />
     <MESSAGE value="chore: 添加 .python-version 文件到 .gitignore&#10;&#10;- 在 .gitignore 文件中添加 .python-version 行&#10;- 避免将 Python 版本文件提交到版本控制系统中" />
     <MESSAGE value="chore: 更新 .gitignore 文件&#10;&#10;- 修改 /log 目录下的忽略规则，仅忽略 log.* 文件&#10;- 保持其他忽略项不变" />
     <MESSAGE value="refactor(src): 优化路径配置和用户界面&#10;&#10;- 修改了日志文件和配置文件的路径，使其相对于项目根目录&#10;- 更新了 webui.py 中的配置读取、保存和日志读取功能&#10;- 改进了用户界面，调整了选项卡标题和布局" />
@@ -695,7 +709,8 @@
     <MESSAGE value="chore: 添加 IDE 配置文件和 Python 版本&#10;&#10;- 添加 .idea 目录，包含 IDE 配置文件&#10;- 添加 .python-version 文件，指定 Python3.12&#10;- 更新 .gitignore，移除已忽略的文件" />
     <MESSAGE value="refactor(IPv6Tool):重构获取公网 IPv6 地址的方法&#10;&#10;- 使用 psutil 库获取网络接口信息，替代 socket 库&#10;- 添加 is_public_ipv6 静态方法判断 IPv6 地址是否为公网地址&#10;- 修改 get_ipv6_list 方法，使用新逻辑判断并收集公网 IPv6 地址&#10;- 优化代码结构，提高可读性和可维护性" />
     <MESSAGE value="docs(README): 更新使用说明，增加 Windows 和 Ubuntu 系统的安装步骤&#10;&#10;- 新增 Windows系统安装步骤&#10;- 新增 Ubuntu 系统安装步骤&#10;- 添加说明，建议用户配置任务计划程序或 systemd 服务以实现持久化运行" />
-    <option name="LAST_COMMIT_MESSAGE" value="docs(README): 更新使用说明，增加 Windows 和 Ubuntu 系统的安装步骤&#10;&#10;- 新增 Windows系统安装步骤&#10;- 新增 Ubuntu 系统安装步骤&#10;- 添加说明，建议用户配置任务计划程序或 systemd 服务以实现持久化运行" />
+    <MESSAGE value="." />
+    <option name="LAST_COMMIT_MESSAGE" value="." />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/EdgeOneDynamicOrigin$win_iptable.coverage" NAME="win_iptable 覆盖结果" MODIFIED="1719360566721" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
@@ -703,6 +718,7 @@
     <SUITE FILE_PATH="coverage/EdgeOneDynamicOrigin$__test__.coverage" NAME="__test__ 覆盖结果" MODIFIED="1723513247320" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/win_iptable_py$main.coverage" NAME="main 覆盖结果" MODIFIED="1732920701165" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/EdgeOneDynamicOrigin$main.coverage" NAME="main 覆盖结果" MODIFIED="1722414841515" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/win_iptable_py$app.coverage" NAME="app 覆盖结果" MODIFIED="1752924111938" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/eodo" />
     <SUITE FILE_PATH="coverage/win_iptable_py$win_iptable.coverage" NAME="win_iptable 覆盖结果" MODIFIED="1728662916503" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/win_iptable_py$text.coverage" NAME="text 覆盖结果" MODIFIED="1751652742842" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
