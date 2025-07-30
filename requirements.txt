@@ -1,2 +1,6 @@
-requests
-PyYAML
+fastapi>=0.110,<1.0
+uvicorn>=0.27,<1.0
+psutil>=5.9,<6.0
+requests>=2.31,<3.0
+PyYAML>=6.0,<7.0
+schedule>=1.2,<2.0
