@@ -19,6 +19,17 @@ EdgeOne 是腾讯云的边缘安全加速平台。该脚本为其提供动态更
 3. 运行 `eodo -p 54321`以启动。  -p 54321 表示 web 管理界面监听端口为 54321。
 4. 在 `http://localhost:54321` 中配置必要的配置项。
 
+#### Docker
+1. 构建镜像：
+   ```bash
+   docker build -t eodo:latest .
+   ```
+2. 运行容器：
+   ```bash
+   docker run -d -p 54321:54321 --name eodo eodo:latest
+   ```
+3. 浏览器访问 `http://localhost:54321` 进行配置。
+
 ### WEB 界面
 ![img.png](img.png)
 
