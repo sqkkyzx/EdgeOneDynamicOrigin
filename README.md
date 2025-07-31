@@ -26,7 +26,7 @@ EdgeOne 是腾讯云的边缘安全加速平台。该脚本为其提供动态更
    ```
 2. 运行容器：
    ```bash
-   docker run -d -p 54321:54321 --name eodo eodo:latest
+   docker run -d --network=host --name eodo eodo:latest
    ```
 3. 浏览器访问 `http://localhost:54321` 进行配置。
 
